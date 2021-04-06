@@ -1,8 +1,6 @@
-export const EVENT_COUNT = 3;
+export const EVENT_COUNT = 10;
 
 export const OFFER_COUNT = 5;
-
-export const DESTINATION_COUNT = 5;
 
 export const PRICE_MAX = 10000;
 

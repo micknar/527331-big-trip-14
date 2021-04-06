@@ -1,6 +1,5 @@
 import {
   OFFER_COUNT,
-  DESTINATION_COUNT,
   POINT_TYPES,
   POINTS,
   DESCRIPTIONS,
@@ -34,8 +33,6 @@ const generateDestination = () => {
   };
 };
 
-const generateDestinations = (count) => new Array(count).fill(' ').map(generateDestination);
-
 const generateOffer = () => {
   return {
     title: getRandomArrayItem(OFFERS),
@@ -50,7 +47,7 @@ const generatePoint = () => {
     id: generateId(),
     basePrice: getRandomInteger(PRICE_MAX),
     date: getPointDates(),
-    destination: generateDestinations(getRandomInteger(DESTINATION_COUNT)),
+    destination: generateDestination(),
     isFavorite: getRandomBoolean(),
     offers: generateOffers(getRandomInteger(OFFER_COUNT)),
     type: getRandomArrayItem(POINT_TYPES),
