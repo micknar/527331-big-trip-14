@@ -66,7 +66,7 @@ const createDestinationTemplate = (destination) => {
   }
 };
 
-export const createEventEditorTemplate = (point = {}) => {
+export const createPointEditorTemplate = (point = {}) => {
   const {
     id = -1,
     basePrice = '',

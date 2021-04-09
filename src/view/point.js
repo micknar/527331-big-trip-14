@@ -1,6 +1,6 @@
-import {createOffersTemplate} from './offers.js';
+import {createOffersTemplate} from './offers';
 
-export const createTripEventTemplate = (point) => {
+export const createPointTemplate = (point) => {
   const {date, destination, basePrice, id, isFavorite, type, offers} = point;
   const {dateFrom, dateTo, duration} = date;
   const {name} = destination;

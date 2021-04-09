@@ -14,7 +14,7 @@ import {
   getRandomArrayItems,
   generateId,
   getPointDates
-} from '../utils/common.js';
+} from '../utils/common';
 
 const generatePicture = () => {
   return {

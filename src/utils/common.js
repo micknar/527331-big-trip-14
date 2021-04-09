@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {TimeGap, Millisecond, DateFormat} from '../const.js';
+import {TimeGap, Millisecond, DateFormat} from '../const';
 
 export const getRandomInteger = (max, min = 0) => Math.floor(Math.random() * (max + 1 - min)) + min;
 
