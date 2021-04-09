@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {TimeGap, Millisecond, DateFormat} from '../const';
+import {TimeGap, Millisecond, DateFormat, FilterType} from '../const';
 
 export const getRandomInteger = (max, min = 0) => Math.floor(Math.random() * (max + 1 - min)) + min;
 
@@ -70,12 +70,14 @@ export const getPointDates = () => {
 
   const date = {
     dateFrom: {
+      default: dateFromDefault,
       date: dateFrom,
       short: dateFromShort,
       full: dateFromFull,
       time: timeFrom,
     },
     dateTo: {
+      default: dateToDefault,
       date: dateTo,
       short: dateToShort,
       full: dateToFull,
@@ -86,3 +88,29 @@ export const getPointDates = () => {
 
   return date;
 };
+
+export const areEqualDates = (dateA, dateB) => {
+  return dayjs(dateA) === dayjs(dateB);
+};
+
+export const isFutureDate = (currentDate, dateFrom) => {
+  return dayjs(currentDate) < dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
+};
+
+export const isPastDate = (currentDate, dateFrom) => {
+  return dayjs(currentDate) > dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
+};
+
+export const getFilteredPoints = (points, filterType) => {
+  const currentDate = dayjs();
+
+  switch (filterType) {
+    case FilterType.EVERYTHING:
+      return points;
+    case FilterType.FUTURE:
+      return points.filter((point) => isFutureDate(currentDate, point.date.dateFrom.default));
+    case FilterType.PAST:
+      return points.filter((point) => isPastDate(currentDate, point.date.dateFrom.default));
+  }
+};
+
