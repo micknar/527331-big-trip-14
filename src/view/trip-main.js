@@ -1,9 +1,11 @@
-export const createTripInfoTemplate = () => {
+import {getRoute, getRouteDates} from '../utils/common';
+
+export const createTripMainTemplate = (points) => {
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
-      <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
+      <h1 class="trip-info__title">${getRoute(points)}</h1>
 
-      <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
+      <p class="trip-info__dates">${getRouteDates(points)}</p>
     </div>
 
     <p class="trip-info__cost">

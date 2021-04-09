@@ -1,7 +1,8 @@
 export const Count = {
-  EVENT: 10,
+  EVENT: 2,
   OFFER: 5,
   PICTURES: 5,
+  CITIES_IN_ROUTE: 3,
 };
 
 export const PRICE_MAX = 10000;
