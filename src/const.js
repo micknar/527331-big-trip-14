@@ -75,3 +75,10 @@ export const DateFormat = {
   date: 'YYYY-MM-DD',
   full: 'YY/MM/DD HH:mm',
 };
+
+export const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  BEFOREEND: 'beforeend',
+  AFTEREND: 'afterend',
+  BEFOREBEGIN: 'beforebegin',
+};

@@ -5,8 +5,8 @@ import {createSortTemplate} from './view/sort';
 import {createPointsListTemplate} from './view/points-list';
 import {createPointTemplate} from './view/point';
 import {createPointEditorTemplate} from './view/point-editor';
-import {RenderPosition, render} from './utils/render';
-import {Count} from './const';
+import {render} from './utils/render';
+import {Count, RenderPosition} from './const';
 import {generatePoints} from './mocks/points';
 
 const points = generatePoints(Count.EVENT);
