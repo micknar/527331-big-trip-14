@@ -1,24 +1,35 @@
 import {createOffersTemplate} from './offers';
+import {dateToFormat, getPointDuration} from '../utils/common';
+import {DateFormat} from '../const';
 
 export const createPointTemplate = (point) => {
   const {date, destination, basePrice, id, isFavorite, type, offers} = point;
-  const {dateFrom, dateTo, duration} = date;
+  const {dateFrom, dateTo} = date;
   const {name} = destination;
 
   return `<li class="trip-events__item">
     <div class="event" id=${id}>
-      <time class="event__date" datetime="${dateFrom.date}">${dateFrom.short}</time>
+      <time class="event__date"
+      datetime="${dateToFormat(dateFrom, DateFormat.date)}">
+      ${dateToFormat(dateFrom, DateFormat.monthDay)}
+      </time>
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
       <h3 class="event__title">${type} ${name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${dateFrom.date}T${dateFrom.time}">${dateFrom.time}</time>
+          <time class="event__start-time"
+          datetime="${dateToFormat(dateFrom, DateFormat.date)}T${dateToFormat(dateFrom, DateFormat.time)}">
+          ${dateToFormat(dateFrom, DateFormat.time)}
+          </time>
           &mdash;
-          <time class="event__end-time" datetime="${dateTo.date}T${dateTo.time}">${dateTo.time}</time>
+          <time class="event__end-time"
+          datetime="${dateToFormat(dateTo, DateFormat.date)}T${dateToFormat(dateTo, DateFormat.time)}">
+          ${dateToFormat(dateTo, DateFormat.time)}
+          </time>
         </p>
-        <p class="event__duration">${duration}</p>
+        <p class="event__duration">${getPointDuration(dateFrom, dateTo)}</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${basePrice}</span>

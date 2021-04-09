@@ -16,7 +16,10 @@ const tripMenuNode = document.querySelector('.trip-controls__navigation');
 const tripFilterNode = document.querySelector('.trip-controls__filters');
 const tripEventsNode = document.querySelector('.trip-events');
 
-render(tripMainNode, createTripMainTemplate(points), RenderPosition.AFTERBEGIN);
+if (points.length > 0) {
+  render(tripMainNode, createTripMainTemplate(points), RenderPosition.AFTERBEGIN);
+}
+
 render(tripMenuNode, createMenuTemplate());
 render(tripFilterNode, createFilterTemplate());
 render(tripEventsNode, createSortTemplate());

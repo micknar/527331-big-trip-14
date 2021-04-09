@@ -1,5 +1,5 @@
 export const Count = {
-  EVENT: 2,
+  EVENT: 8,
   OFFER: 5,
   PICTURES: 5,
   CITIES_IN_ROUTE: 3,
@@ -67,8 +67,11 @@ export const SortType = {
 };
 
 export const DateFormat = {
-  date: 'YYYY-MM-DD',
-  dateShort: 'MMM DD',
   time: 'HH:mm',
+  day: 'DD',
+  month: 'MMM',
+  dayMonth: 'DD MMM',
+  monthDay: 'MMM DD',
+  date: 'YYYY-MM-DD',
   full: 'YY/MM/DD HH:mm',
 };

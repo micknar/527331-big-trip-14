@@ -1,5 +1,5 @@
-import dayjs from 'dayjs';
 import {POINTS, POINT_TYPES, DateFormat} from '../const';
+import {dateToFormat} from '../utils/common';
 
 const createDestinationsListTemplate = (id) => {
   return `<datalist id="destination-list-${id}">
@@ -71,12 +71,8 @@ export const createPointEditorTemplate = (point = {}) => {
     id = -1,
     basePrice = '',
     date = {
-      dateFrom: {
-        full: dayjs().format(DateFormat.full),
-      },
-      dateTo: {
-        full: dayjs().format(DateFormat.full),
-      },
+      dateFrom: new Date(),
+      dateTo: new Date(),
     },
     destination = {
       name: POINTS[0],
@@ -111,10 +107,12 @@ export const createPointEditorTemplate = (point = {}) => {
 
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-${id}">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${date.dateFrom.full}">
+          <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time"
+          value="${dateToFormat(date.dateFrom, DateFormat.full)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-${id}">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${date.dateTo.full}">
+          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time"
+          value="${dateToFormat(date.dateTo, DateFormat.full)}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
