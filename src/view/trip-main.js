@@ -1,4 +1,4 @@
-import {getRoute, getRouteDates} from '../utils/common';
+import {getRoute, getRouteDates, getTotalPrice} from '../utils/common';
 
 export const createTripMainTemplate = (points) => {
   return `<section class="trip-main__trip-info  trip-info">
@@ -9,7 +9,7 @@ export const createTripMainTemplate = (points) => {
     </div>
 
     <p class="trip-info__cost">
-      Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
+      Total: &euro;&nbsp;<span class="trip-info__cost-value">${getTotalPrice(points, 'basePrice')}</span>
     </p>
   </section>`;
 };

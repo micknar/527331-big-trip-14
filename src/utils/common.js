@@ -129,3 +129,14 @@ export const getRouteDates = (points) => {
 
   return `${getStartDate()} &mdash; ${finishDate}`;
 };
+
+export const getTotalPrice = (item, price) => {
+  const result = item
+    ? item
+      .slice()
+      .map((point) => point[price] + getTotalPrice(point.offers, 'price'))
+      .reduce((sum, price) => sum + price, 0)
+    : 0;
+
+  return result;
+};
