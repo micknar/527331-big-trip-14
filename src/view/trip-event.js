@@ -3,20 +3,20 @@ import {createOffersTemplate} from './offers.js';
 export const createTripEventTemplate = (point) => {
   const {date, destination, basePrice, id, isFavorite, type, offers} = point;
   const {dateFrom, dateTo, duration} = date;
-  const {name, description, pictures} = destination;
+  const {name} = destination;
 
   return `<li class="trip-events__item">
     <div class="event" id=${id}>
-      <time class="event__date" datetime="${dateFrom.full}">${dateFrom.short}</time>
+      <time class="event__date" datetime="${dateFrom.date}">${dateFrom.short}</time>
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
       <h3 class="event__title">${type} ${name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${dateFrom.time}</time>
+          <time class="event__start-time" datetime="${dateFrom.date}T${dateFrom.time}">${dateFrom.time}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${dateTo.time}</time>
+          <time class="event__end-time" datetime="${dateTo.date}T${dateTo.time}">${dateTo.time}</time>
         </p>
         <p class="event__duration">${duration}</p>
       </div>

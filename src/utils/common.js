@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {TimeGap, Millisecond} from '../const.js';
+import {TimeGap, Millisecond, DateFormat} from '../const.js';
 
 export const getRandomInteger = (max, min = 0) => Math.floor(Math.random() * (max + 1 - min)) + min;
 
@@ -53,28 +53,32 @@ export const getTimeDiff = (diff) => {
 };
 
 export const getPointDates = () => {
-  const dateFromFull = getRandomDate();
-  const dateToFull = getRandomDate(dateFromFull);
+  const dateFromDefault = getRandomDate();
+  const dateToDefault = getRandomDate(dateFromDefault);
 
-  const dateFrom = dateToFormat(dateFromFull, 'YYYY-MM-DD');
-  const dateFromShort = dateToFormat(dateFromFull, 'MMM DD');
-  const timeFrom = dateToFormat(dateFromFull, 'HH:mm');
+  const dateFrom = dateToFormat(dateFromDefault, DateFormat.date);
+  const dateFromShort = dateToFormat(dateFromDefault, DateFormat.dateShort);
+  const dateFromFull = dateToFormat(dateFromDefault, DateFormat.full);
+  const timeFrom = dateToFormat(dateFromDefault, DateFormat.time);
 
-  const dateTo = dateToFormat(dateToFull, 'YYYY-MM-DD');
-  const dateToShort = dateToFormat(dateToFull, 'MMM DD');
-  const timeTo = dateToFormat(dateToFull, 'HH:mm');
+  const dateTo = dateToFormat(dateToDefault, DateFormat.date);
+  const dateToShort = dateToFormat(dateToDefault, DateFormat.dateShort);
+  const dateToFull = dateToFormat(dateToDefault, DateFormat.full);
+  const timeTo = dateToFormat(dateToDefault, DateFormat.time);
 
-  const duration = getTimeDiff(dateToFull.diff(dateFromFull));
+  const duration = getTimeDiff(dateToDefault.diff(dateFromDefault));
 
   const date = {
     dateFrom: {
-      full: dateFrom,
+      date: dateFrom,
       short: dateFromShort,
+      full: dateFromFull,
       time: timeFrom,
     },
     dateTo: {
-      full: dateTo,
+      date: dateTo,
       short: dateToShort,
+      full: dateToFull,
       time: timeTo,
     },
     duration,

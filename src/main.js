@@ -6,10 +6,10 @@ import {createTripListTemplate} from './view/trip-list.js';
 import {createTripEventTemplate} from './view/trip-event.js';
 import {createEventEditorTemplate} from './view/event-editor.js';
 import {RenderPosition, render} from './utils/render.js';
-import {EVENT_COUNT} from './const';
+import {Count} from './const';
 import {generatePoints} from './mocks/points.js';
 
-const points = generatePoints(EVENT_COUNT);
+const points = generatePoints(Count.EVENT);
 
 const tripMainNode = document.querySelector('.trip-main');
 const tripMenuNode = document.querySelector('.trip-controls__navigation');
@@ -24,10 +24,10 @@ render(tripEventsNode, createTripListTemplate());
 
 const tripEventsListNode = document.querySelector('.trip-events__list');
 
-render(tripEventsListNode, createEventEditorTemplate());
+render(tripEventsListNode, createEventEditorTemplate(points[0]));
 
-for (let i = 0; i < EVENT_COUNT; i++) {
+for (let i = 0; i < Count.EVENT; i++) {
   render(tripEventsListNode, createTripEventTemplate(points[i]));
 }
 
-console.log(points);
+//console.log(points);

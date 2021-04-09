@@ -1,6 +1,8 @@
-export const EVENT_COUNT = 10;
-
-export const OFFER_COUNT = 5;
+export const Count = {
+  EVENT: 10,
+  OFFER: 5,
+  PICTURES: 5,
+};
 
 export const PRICE_MAX = 10000;
 
@@ -42,4 +44,30 @@ export const Millisecond = {
   IN_DAY: 86400000,
   IN_HOUR: 3600000,
   IN_MINUTE: 60000,
+};
+
+export const UserAction = {
+  ADD_POINT: 'add',
+  EDIT_POINT: 'edit',
+};
+
+export const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past',
+};
+
+export const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers',
+};
+
+export const DateFormat = {
+  date: 'YYYY-MM-DD',
+  dateShort: 'MMM DD',
+  time: 'HH:mm',
+  full: 'YY/MM/DD HH:mm',
 };

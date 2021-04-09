@@ -1,10 +1,10 @@
 import {
-  OFFER_COUNT,
   POINT_TYPES,
   POINTS,
   DESCRIPTIONS,
   OFFERS,
-  PRICE_MAX
+  PRICE_MAX,
+  Count
 } from '../const';
 
 import {
@@ -16,22 +16,14 @@ import {
   getPointDates
 } from '../utils/common.js';
 
-const generateDestination = () => {
+const generatePicture = () => {
   return {
-    description: getRandomArrayItems(DESCRIPTIONS),
-    name: getRandomArrayItem(POINTS),
-    pictures: [
-      {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
-        alt: getRandomArrayItem(DESCRIPTIONS),
-      },
-      {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
-        alt: getRandomArrayItem(DESCRIPTIONS),
-      },
-    ],
+    src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+    alt: getRandomArrayItem(DESCRIPTIONS),
   };
 };
+
+const generatePictures = (count) => new Array(count).fill(' ').map(generatePicture);
 
 const generateOffer = () => {
   return {
@@ -42,6 +34,14 @@ const generateOffer = () => {
 
 const generateOffers = (count) => new Array(count).fill(' ').map(generateOffer);
 
+const generateDestination = () => {
+  return {
+    description: getRandomArrayItems(DESCRIPTIONS),
+    name: getRandomArrayItem(POINTS),
+    pictures: generatePictures(getRandomInteger(Count.PICTURES)),
+  };
+};
+
 const generatePoint = () => {
   return {
     id: generateId(),
@@ -49,7 +49,7 @@ const generatePoint = () => {
     date: getPointDates(),
     destination: generateDestination(),
     isFavorite: getRandomBoolean(),
-    offers: generateOffers(getRandomInteger(OFFER_COUNT)),
+    offers: generateOffers(getRandomInteger(Count.OFFER)),
     type: getRandomArrayItem(POINT_TYPES),
   };
 };
