@@ -1,39 +1,36 @@
-import {createTripInfoTemplate} from './view/trip-info.js';
-import {createMenuTemplate} from './view/menu.js';
-import {createFilterTemplate} from './view/filter.js';
-import {createSortTemplate} from './view/sort.js';
-import {createTripListTemplate} from './view/trip-list.js';
-import {createTripEventTemplate} from './view/trip-event.js';
-import {createEventEditorTemplate} from './view/event-editor.js';
+import {createTripMainTemplate} from './view/trip-main';
+import {createMenuTemplate} from './view/menu';
+import {createFilterTemplate} from './view/filter';
+import {createSortTemplate} from './view/sort';
+import {createPointsListTemplate} from './view/points-list';
+import {createPointTemplate} from './view/point';
+import {createPointEditorTemplate} from './view/point-editor';
+import {render} from './utils/render';
+import {Count, RenderPosition} from './const';
+import {generatePoints} from './mocks/points';
 
-const EVENT_COUNT = 3;
-
-const RenderPosition = {
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-  AFTEREND: 'afterend',
-  BEFOREBEGIN: 'beforebegin',
-};
-
-const render = (container, template, position = RenderPosition.BEFOREEND) => {
-  container.insertAdjacentHTML(position, template);
-};
+const points = generatePoints(Count.EVENT);
 
 const tripMainNode = document.querySelector('.trip-main');
 const tripMenuNode = document.querySelector('.trip-controls__navigation');
 const tripFilterNode = document.querySelector('.trip-controls__filters');
 const tripEventsNode = document.querySelector('.trip-events');
 
-render(tripMainNode, createTripInfoTemplate(), RenderPosition.AFTERBEGIN);
+if (points.length > 0) {
+  render(tripMainNode, createTripMainTemplate(points), RenderPosition.AFTERBEGIN);
+}
+
 render(tripMenuNode, createMenuTemplate());
 render(tripFilterNode, createFilterTemplate());
 render(tripEventsNode, createSortTemplate());
-render(tripEventsNode, createTripListTemplate());
+render(tripEventsNode, createPointsListTemplate());
 
 const tripEventsListNode = document.querySelector('.trip-events__list');
 
-render(tripEventsListNode, createEventEditorTemplate());
+render(tripEventsListNode, createPointEditorTemplate(points[0]));
 
-for (let i = 0; i < EVENT_COUNT; i++) {
-  render(tripEventsListNode, createTripEventTemplate());
+for (let i = 0; i < Count.EVENT; i++) {
+  render(tripEventsListNode, createPointTemplate(points[i]));
 }
+
+//console.log(points);
