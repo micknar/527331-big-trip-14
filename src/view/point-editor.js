@@ -2,6 +2,23 @@ import AbstractView from './abstract';
 import {POINTS, POINT_TYPES, DateFormat} from '../const';
 import {dateToFormat} from '../utils/common';
 
+const BLANK_POINT = {
+  id: -1,
+  basePrice: '',
+  date: {
+    dateFrom: new Date(),
+    dateTo: new Date(),
+  },
+  destination: {
+    name: POINTS[0],
+    pictures: [],
+    description: '',
+  },
+  //isFavorite: false,
+  offers: [],
+  type: POINT_TYPES[0],
+};
+
 const createDestinationsListTemplate = (id) => {
   return `<datalist id="destination-list-${id}">
     ${POINTS.map((point) => `<option value="${point}"></option>`).join('')}
@@ -67,23 +84,8 @@ const createDestinationTemplate = (destination) => {
   }
 };
 
-const createPointEditorTemplate = (point = {}) => {
-  const {
-    id = -1,
-    basePrice = '',
-    date = {
-      dateFrom: new Date(),
-      dateTo: new Date(),
-    },
-    destination = {
-      name: POINTS[0],
-      pictures: [],
-      description: '',
-    },
-    //isFavorite = false,
-    offers = [],
-    type = POINT_TYPES[0],
-  } = point;
+const createPointEditorTemplate = (point) => {
+  const {id, type, date, basePrice, offers, destination} = point;
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -143,12 +145,35 @@ ${id === -1
 };
 
 export default class PointEditor extends AbstractView {
-  constructor(point) {
+  constructor(point = BLANK_POINT) {
     super();
     this._point = point;
+
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createPointEditorTemplate();
+    return createPointEditorTemplate(this._point);
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('.event--edit').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 }
