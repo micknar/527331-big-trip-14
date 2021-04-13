@@ -1,4 +1,6 @@
-export const createMenuTemplate = () => {
+import Abstract from '../view/abstract';
+
+const createMainNavTemplate = () => {
   return `<div class="trip-controls__navigation">
     <h2 class="visually-hidden">Switch trip view</h2>
     <nav class="trip-controls__trip-tabs trip-tabs">
@@ -7,3 +9,9 @@ export const createMenuTemplate = () => {
     </nav>
   </div>`;
 };
+
+export default class MainNav extends Abstract {
+  getTemplate() {
+    return createMainNavTemplate();
+  }
+}
