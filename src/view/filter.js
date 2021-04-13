@@ -1,4 +1,4 @@
-import Abstract from './abstract';
+import AbstractView from './abstract';
 
 const createFilterTemplate = () => {
   return `<div class="trip-controls__filters">
@@ -24,7 +24,7 @@ const createFilterTemplate = () => {
   </div>`;
 };
 
-export default class Filter extends Abstract {
+export default class Filter extends AbstractView {
   getTemplate() {
     return createFilterTemplate();
   }

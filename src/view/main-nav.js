@@ -1,4 +1,4 @@
-import Abstract from './abstract';
+import AbstractView from './abstract';
 
 const createMainNavTemplate = () => {
   return `<div class="trip-controls__navigation">
@@ -10,7 +10,7 @@ const createMainNavTemplate = () => {
   </div>`;
 };
 
-export default class MainNav extends Abstract {
+export default class MainNav extends AbstractView {
   getTemplate() {
     return createMainNavTemplate();
   }
