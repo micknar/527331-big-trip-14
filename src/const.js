@@ -82,3 +82,10 @@ export const RenderPosition = {
   AFTEREND: 'afterend',
   BEFOREBEGIN: 'beforebegin',
 };
+
+export const Container = {
+  MAIN: document.querySelector('.trip-main'),
+  MENU: document.querySelector('.trip-controls__navigation'),
+  FILTERS: document.querySelector('.trip-controls__filters'),
+  EVENTS: document.querySelector('.trip-events'),
+};

@@ -1,8 +1,20 @@
-import {createOffersTemplate} from './offers';
+import AbstractView from './abstract';
 import {dateToFormat, getPointDuration} from '../utils/common';
 import {DateFormat} from '../const';
 
-export const createPointTemplate = (point) => {
+const createOffersTemplate = (offers) => {
+  return `<ul class="event__selected-offers">
+  ${offers.map((offer) => {
+    return `<li class="event__offer">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+    </li>`;
+  }).join('')}
+  </ul>`;
+};
+
+const createPointTemplate = (point) => {
   const {date, destination, basePrice, id, isFavorite, type, offers} = point;
   const {dateFrom, dateTo} = date;
   const {name} = destination;
@@ -48,3 +60,14 @@ export const createPointTemplate = (point) => {
     </div>
   </li>`;
 };
+
+export default class Point extends AbstractView {
+  constructor(point) {
+    super();
+    this._point = point;
+  }
+
+  getTemplate() {
+    return createPointTemplate(this._point);
+  }
+}

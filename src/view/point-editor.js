@@ -1,3 +1,4 @@
+import AbstractView from './abstract';
 import {POINTS, POINT_TYPES, DateFormat} from '../const';
 import {dateToFormat} from '../utils/common';
 
@@ -66,7 +67,7 @@ const createDestinationTemplate = (destination) => {
   }
 };
 
-export const createPointEditorTemplate = (point = {}) => {
+const createPointEditorTemplate = (point = {}) => {
   const {
     id = -1,
     basePrice = '',
@@ -140,3 +141,14 @@ ${id === -1
     </form>
   </li>`;
 };
+
+export default class PointEditor extends AbstractView {
+  constructor(point) {
+    super();
+    this._point = point;
+  }
+
+  getTemplate() {
+    return createPointEditorTemplate();
+  }
+}
