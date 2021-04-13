@@ -5,6 +5,7 @@ import SortView from './view/sort';
 import PointsListView from './view/points-list';
 import PointView from './view/point';
 import PointEditorView from './view/point-editor';
+import NoPointsView from './view/no-points';
 import {render, replace} from './utils/render';
 import {Container, Count, RenderPosition} from './const';
 import {generatePoints} from './mocks/points';
@@ -18,13 +19,13 @@ const renderPoint = (pointsListElement, point) => {
   const pointEditorComponent = new PointEditorView(point);
 
   const replacePointToForm = () => {
-    replace(pointEditorComponent, pointComponent)
+    replace(pointEditorComponent, pointComponent);
   };
 
   const replaceFormToPoint = () => {
-    replace(pointComponent, pointEditorComponent)
+    replace(pointComponent, pointEditorComponent);
   };
-  
+
   const onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
@@ -51,17 +52,19 @@ const renderPoint = (pointsListElement, point) => {
   render(pointsListElement, pointComponent);
 };
 
-if (points.length > 0) {
-  render(Container.MAIN, new TripMainView(points), RenderPosition.AFTERBEGIN);
-}
-
 render(Container.MENU, new MainNavView());
 render(Container.FILTERS, new FilterView());
-render(Container.EVENTS, new SortView());
-render(Container.EVENTS, pointsListComponent);
 
-for (let i = 0; i < Count.EVENT; i++) {
-  renderPoint(pointsListComponent.getElement(), points[i]);
+if (points.length > 0) {
+  render(Container.MAIN, new TripMainView(points), RenderPosition.AFTERBEGIN);
+  render(Container.EVENTS, new SortView());
+  render(Container.EVENTS, pointsListComponent);
+
+  for (let i = 0; i < Count.EVENT; i++) {
+    renderPoint(pointsListComponent.getElement(), points[i]);
+  }
+} else {
+  render(Container.EVENTS, new NoPointsView());
 }
 
 //console.log(points);
