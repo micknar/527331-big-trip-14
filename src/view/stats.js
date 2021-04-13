@@ -1,4 +1,6 @@
-export const createStatsTemplate = () => {
+import Abstract from './abstract';
+
+const createStatsTemplate = () => {
   return `<section class="statistics">
     <h2 class="visually-hidden">Trip statistics</h2>
 
@@ -15,3 +17,9 @@ export const createStatsTemplate = () => {
     </div>
   </section>`;
 };
+
+export default class Stats extends Abstract {
+  getTemplate() {
+    return createStatsTemplate();
+  }
+}

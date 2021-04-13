@@ -1,4 +1,4 @@
-import Abstract from '../view/abstract';
+import Abstract from './abstract';
 
 const createFilterTemplate = () => {
   return `<div class="trip-controls__filters">

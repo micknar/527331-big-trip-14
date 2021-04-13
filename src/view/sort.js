@@ -1,4 +1,4 @@
-import Abstract from '../view/abstract';
+import Abstract from './abstract';
 
 const createSortTemplate = () => {
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
