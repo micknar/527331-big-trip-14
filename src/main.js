@@ -66,5 +66,3 @@ if (points.length > 0) {
 } else {
   render(Container.EVENTS, new NoPointsView());
 }
-
-//console.log(points);
