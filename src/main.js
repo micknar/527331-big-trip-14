@@ -1,36 +1,70 @@
-import {createTripMainTemplate} from './view/trip-main';
-import {createMenuTemplate} from './view/menu';
-import {createFilterTemplate} from './view/filter';
-import {createSortTemplate} from './view/sort';
-import {createPointsListTemplate} from './view/points-list';
-import {createPointTemplate} from './view/point';
-import {createPointEditorTemplate} from './view/point-editor';
-import {render} from './utils/render';
-import {Count, RenderPosition} from './const';
+import TripMainView from './view/trip-main';
+import MainNavView from './view/main-nav';
+import FilterView from './view/filter';
+import SortView from './view/sort';
+import PointsListView from './view/points-list';
+import PointView from './view/point';
+import PointEditorView from './view/point-editor';
+import NoPointsView from './view/no-points';
+import {render, replace} from './utils/render';
+import {Container, Count, RenderPosition} from './const';
 import {generatePoints} from './mocks/points';
 
 const points = generatePoints(Count.EVENT);
 
-const tripMainNode = document.querySelector('.trip-main');
-const tripMenuNode = document.querySelector('.trip-controls__navigation');
-const tripFilterNode = document.querySelector('.trip-controls__filters');
-const tripEventsNode = document.querySelector('.trip-events');
+const pointsListComponent = new PointsListView();
+
+const renderPoint = (pointsListElement, point) => {
+  const pointComponent = new PointView(point);
+  const pointEditorComponent = new PointEditorView(point);
+
+  const replacePointToForm = () => {
+    replace(pointEditorComponent, pointComponent);
+  };
+
+  const replaceFormToPoint = () => {
+    replace(pointComponent, pointEditorComponent);
+  };
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      replaceFormToPoint();
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
+  pointComponent.setEditClickHandler(() => {
+    replacePointToForm();
+    document.addEventListener('keydown', onEscKeyDown);
+  });
+
+  pointEditorComponent.setFormSubmitHandler(() => {
+    replaceFormToPoint();
+    document.removeEventListener('keydown', onEscKeyDown);
+  });
+
+  pointEditorComponent.setEditClickHandler(() => {
+    replaceFormToPoint();
+    document.removeEventListener('keydown', onEscKeyDown);
+  });
+
+  render(pointsListElement, pointComponent);
+};
+
+render(Container.MENU, new MainNavView());
+render(Container.FILTERS, new FilterView());
 
 if (points.length > 0) {
-  render(tripMainNode, createTripMainTemplate(points), RenderPosition.AFTERBEGIN);
-}
+  render(Container.MAIN, new TripMainView(points), RenderPosition.AFTERBEGIN);
+  render(Container.EVENTS, new SortView());
+  render(Container.EVENTS, pointsListComponent);
 
-render(tripMenuNode, createMenuTemplate());
-render(tripFilterNode, createFilterTemplate());
-render(tripEventsNode, createSortTemplate());
-render(tripEventsNode, createPointsListTemplate());
-
-const tripEventsListNode = document.querySelector('.trip-events__list');
-
-render(tripEventsListNode, createPointEditorTemplate(points[0]));
-
-for (let i = 0; i < Count.EVENT; i++) {
-  render(tripEventsListNode, createPointTemplate(points[i]));
+  for (let i = 0; i < Count.EVENT; i++) {
+    renderPoint(pointsListComponent.getElement(), points[i]);
+  }
+} else {
+  render(Container.EVENTS, new NoPointsView());
 }
 
 //console.log(points);
