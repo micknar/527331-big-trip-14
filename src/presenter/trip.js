@@ -8,6 +8,7 @@ import {render} from '../utils/render';
 export default class Trip {
   constructor(tripContainer) {
     this._tripContainer = tripContainer;
+    this._pointPresenter = {};
 
     this._pointsListComponent = new PointsListView();
     this._mainNavComponent = new MainNavView();
@@ -20,13 +21,13 @@ export default class Trip {
       render(this._tripContainer, this._sortComponent);
       render(this._tripContainer, this._pointsListComponent);
     
-      this._renderPoints(points);
+      this._renderTrip(points);
     } else {
       render(this._tripContainer, this._noPointsComponent);
     }
   }
 
-  _renderPoints(points) {
+  _renderTrip(points) {
     for (let i = 0; i < points.length; i++) {
       this._renderPoint(points[i]);
     }
@@ -35,5 +36,13 @@ export default class Trip {
   _renderPoint(point) {
     const pointPresenter = new PointPresenter(this._pointsListComponent.getElement());
     pointPresenter.init(point);
+    this._pointPresenter[point.id] = pointPresenter;
+  }
+
+  _clearTrip() {
+    Object
+      .values(this._pointPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._pointPresenter = {};
   }
 } 
