@@ -15,6 +15,6 @@ render(Container.FILTERS, new FilterView());
 
 if (points.length > 0) {
   render(Container.MAIN, new TripMainView(points), RenderPosition.AFTERBEGIN);
- }
+}
 
- tripPresenter.init(points);
+tripPresenter.init(points);

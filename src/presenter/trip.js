@@ -26,7 +26,7 @@ export default class Trip {
     if (this._points.length > 0) {
       render(this._tripContainer, this._sortComponent);
       render(this._tripContainer, this._pointsListComponent);
-    
+
       this._renderTrip(this._points);
     } else {
       render(this._tripContainer, this._noPointsComponent);
