@@ -174,6 +174,6 @@ export default class PointEditor extends AbstractView {
 
   _editClickHandler(evt) {
     evt.preventDefault();
-    this._callback.editClick();
+    this._callback.editClick(this._point);
   }
 }

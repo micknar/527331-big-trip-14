@@ -4,6 +4,7 @@ import SortView from '../view/sort';
 import PointsListView from '../view/points-list';
 import NoPointsView from '../view/no-points';
 import {render} from '../utils/render';
+import {updateItem} from '../utils/common';
 
 export default class Trip {
   constructor(tripContainer) {
@@ -14,14 +15,18 @@ export default class Trip {
     this._mainNavComponent = new MainNavView();
     this._sortComponent = new SortView();
     this._noPointsComponent= new NoPointsView();
+
+    this._handleChangeData = this._handleChangeData.bind(this);
   }
 
   init(points) {
-    if (points.length > 0) {
+    this._points = points.slice();
+
+    if (this._points.length > 0) {
       render(this._tripContainer, this._sortComponent);
       render(this._tripContainer, this._pointsListComponent);
     
-      this._renderTrip(points);
+      this._renderTrip(this._points);
     } else {
       render(this._tripContainer, this._noPointsComponent);
     }
@@ -34,7 +39,8 @@ export default class Trip {
   }
 
   _renderPoint(point) {
-    const pointPresenter = new PointPresenter(this._pointsListComponent.getElement());
+    const pointPresenter = new PointPresenter(this._pointsListComponent.getElement(), this._handleChangeData);
+
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;
   }
@@ -45,4 +51,9 @@ export default class Trip {
       .forEach((presenter) => presenter.destroy());
     this._pointPresenter = {};
   }
-} 
+
+  _handleChangeData(updatedPoint) {
+    this._points = updateItem(this._points, updatedPoint);
+    this._pointPresenter[updatedPoint.id].init(updatedPoint);
+  }
+}

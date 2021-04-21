@@ -3,8 +3,9 @@ import PointEditorView from '../view/point-editor';
 import {render, replace, remove} from '../utils/render';
 
 export default class Point {
-  constructor(pointContainer) {
+  constructor(pointContainer, changeData) {
     this._pointContainer = pointContainer;
+    this._changeData = changeData;
 
     this._pointComponent = null;
     this._pointEditorComponent = null;
@@ -13,6 +14,7 @@ export default class Point {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   init(point) {
@@ -27,6 +29,7 @@ export default class Point {
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointEditorComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditorComponent.setEditClickHandler(this._handleCloseClick);
+    this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevPointComponent === null || prevPointEditorComponent === null) {
       render(this._pointContainer, this._pointComponent);
@@ -67,7 +70,8 @@ export default class Point {
     }
   }
 
-  _handleFormSubmit() {
+  _handleFormSubmit(point) {
+    this._changeData(point);
     this._replaceFormToPoint();
   }
 
@@ -77,5 +81,17 @@ export default class Point {
 
   _handleCloseClick() {
     this._replaceFormToPoint();
+  }
+
+  _handleFavoriteClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._point,
+        {
+          isFavorite: !this._point.isFavorite,
+        },
+      ),
+    );
   }
 } 
