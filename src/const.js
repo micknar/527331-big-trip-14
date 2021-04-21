@@ -89,3 +89,8 @@ export const Container = {
   FILTERS: document.querySelector('.trip-controls__filters'),
   EVENTS: document.querySelector('.trip-events'),
 };
+
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
