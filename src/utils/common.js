@@ -38,21 +38,20 @@ export const dateToFormat = (date, format) => {
   return dayjs(date).format(format).toUpperCase();
 };
 
-export const getTimeDiff = (diff) => {
+export const getPointDuration = (dateFrom, dateTo) => {
+  const diff = dateTo.diff(dateFrom);
   let result;
 
   if ((diff / Millisecond.IN_DAY) >= 1) {
-    result = `${Math.trunc(diff / Millisecond.IN_DAY)}D ${Math.trunc(diff % Millisecond.IN_DAY / Millisecond.IN_HOUR)}H ${Math.round(diff % Millisecond.IN_HOUR / Millisecond.IN_MINUTE)}M`;
+    result = `${dateToFormat(diff, 'D')}D ${dateToFormat(diff, 'H')}H ${dateToFormat(diff, 'M')}M`;
   } else if ((diff / Millisecond.IN_HOUR) >= 1) {
-    result = `${Math.trunc(diff % Millisecond.IN_DAY / Millisecond.IN_HOUR)}H ${Math.round(diff % Millisecond.IN_HOUR / Millisecond.IN_MINUTE)}M`;
+    result = `${dateToFormat(diff, 'H')}H ${dateToFormat(diff, 'M')}M`;
   } else {
-    result = `${Math.round(diff % Millisecond.IN_HOUR / Millisecond.IN_MINUTE)}M`;
+    result = `${dateToFormat(diff, 'M')}M`;
   }
 
   return result;
 };
-
-export const getPointDuration = (dateFrom, dateTo) => getTimeDiff(dateTo.diff(dateFrom));
 
 export const getPointDates = () => {
   const dateFrom = getRandomDate();
