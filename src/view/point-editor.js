@@ -217,7 +217,7 @@ export default class PointEditor extends SmartView {
     evt.preventDefault();
     this.updateData({
       basePrice: evt.target.value,
-    });
+    }, true);
   }
 
   _setInnerHandlers() {
