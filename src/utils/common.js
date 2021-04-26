@@ -154,3 +154,15 @@ export const updateItem = (items, update) => {
     ...items.slice(index + 1),
   ];
 };
+
+export const sortByStartDate = (points) => {
+  return points.slice().sort((a, b) => Date.parse(a.date.dateFrom) - Date.parse(b.date.dateFrom));
+};
+
+export const sortByTime = (points) => {
+  return points.sort((a, b) => b.date.dateTo.diff(b.date.dateFrom) - a.date.dateTo.diff(a.date.dateFrom));
+};
+
+export const sortByPrice = (points) => {
+  return points.sort((a, b) => b.basePrice - a.basePrice);
+};
