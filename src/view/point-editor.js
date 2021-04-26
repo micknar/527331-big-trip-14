@@ -1,24 +1,7 @@
 import SmartView from './smart';
-import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count} from '../const';
+import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count, BLANK_POINT} from '../const';
 import {dateToFormat, getRandomArrayItems, getRandomInteger} from '../utils/common';
 import {generatePictures, generateOffers} from '../mocks/points';
-
-const BLANK_POINT = {
-  id: -1,
-  basePrice: '',
-  date: {
-    dateFrom: new Date(),
-    dateTo: new Date(),
-  },
-  destination: {
-    name: POINTS[0],
-    pictures: [],
-    description: '',
-  },
-  //isFavorite: false,
-  offers: [],
-  type: POINT_TYPES[0],
-};
 
 const createDestinationsListTemplate = (id) => {
   return `<datalist id="destination-list-${id}">

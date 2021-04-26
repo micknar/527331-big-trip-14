@@ -94,3 +94,19 @@ export const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
 };
+
+export const BLANK_POINT = {
+  id: -1,
+  basePrice: '',
+  date: {
+    dateFrom: new Date(),
+    dateTo: new Date(),
+  },
+  destination: {
+    name: POINTS[0],
+    pictures: [],
+    description: '',
+  },
+  offers: [],
+  type: POINT_TYPES[0],
+};
