@@ -3,7 +3,7 @@ import MainNavView from '../view/main-nav';
 import SortView from '../view/sort';
 import PointsListView from '../view/points-list';
 import NoPointsView from '../view/no-points';
-import {render} from '../utils/render';
+import {render, remove} from '../utils/render';
 import {updateItem, sortByPrice, sortByTime, sortByStartDate} from '../utils/common';
 import {SortType} from '../const';
 
@@ -14,10 +14,8 @@ export default class Trip {
 
     this._currentSortType = SortType.DAY;
 
-    this._pointsListComponent = new PointsListView();
     this._mainNavComponent = new MainNavView();
-    this._sortComponent = new SortView();
-    this._noPointsComponent= new NoPointsView();
+    this._noPointsComponent = new NoPointsView();
 
     this._handleChangeData = this._handleChangeData.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -38,11 +36,15 @@ export default class Trip {
   }
 
   _renderSort() {
+    this._sortComponent = new SortView(this._currentSortType);
+
     render(this._tripContainer, this._sortComponent);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderPointsListContainer() {
+    this._pointsListComponent = new PointsListView();
+
     render(this._tripContainer, this._pointsListComponent);
   }
 
@@ -64,6 +66,9 @@ export default class Trip {
   }
 
   _clearTrip() {
+    remove(this._sortComponent);
+    remove(this._pointsListComponent);
+
     Object
       .values(this._pointPresenter)
       .forEach((presenter) => presenter.destroy());
@@ -101,10 +106,12 @@ export default class Trip {
       return;
     }
 
+    this._currentSortType = sortType;
+
     this._sortPoints(sortType);
     this._clearTrip();
+    this._renderSort();
+    this._renderPointsListContainer();
     this._renderTrip();
-
-    this._currentSortType = sortType;
   }
 }
