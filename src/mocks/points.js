@@ -23,7 +23,7 @@ const generatePicture = () => {
   };
 };
 
-const generatePictures = (count) => new Array(count).fill(' ').map(generatePicture);
+export const generatePictures = (count) => new Array(count).fill(' ').map(generatePicture);
 
 const generateOffer = () => {
   return {
@@ -32,7 +32,7 @@ const generateOffer = () => {
   };
 };
 
-const generateOffers = (count) => new Array(count).fill(' ').map(generateOffer);
+export const generateOffers = (count) => new Array(count).fill(' ').map(generateOffer);
 
 const generateDestination = () => {
   return {

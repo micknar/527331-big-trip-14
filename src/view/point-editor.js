@@ -1,6 +1,7 @@
-import AbstractView from './abstract';
-import {POINTS, POINT_TYPES, DateFormat} from '../const';
-import {dateToFormat} from '../utils/common';
+import SmartView from './smart';
+import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count} from '../const';
+import {dateToFormat, getRandomArrayItems, getRandomInteger} from '../utils/common';
+import {generatePictures, generateOffers} from '../mocks/points';
 
 const BLANK_POINT = {
   id: -1,
@@ -48,7 +49,7 @@ const createOffersTemplate = (id, offers) => {
       <div class="event__available-offers">
   ${offers.map((offer) => {
     return `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${id}" type="checkbox" name="event-offer-${offer.title}" checked>
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${id}" type="checkbox" name="event-offer-${offer.title}">
       <label class="event__offer-label" for="event-offer-${offer.title}-${id}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
@@ -144,17 +145,50 @@ ${id === -1
   </li>`;
 };
 
-export default class PointEditor extends AbstractView {
+export default class PointEditor extends SmartView {
   constructor(point = BLANK_POINT) {
     super();
-    this._point = point;
+    this._data = PointEditor.parsePointToData(point);
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._editClickHandler = this._editClickHandler.bind(this);
+    this._pointTypeChangeHandler = this._pointTypeChangeHandler.bind(this);
+    this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
+    this._priceChangeHandler = this._priceChangeHandler.bind(this);
+
+    this._setInnerHandlers();
   }
 
   getTemplate() {
-    return createPointEditorTemplate(this._point);
+    return createPointEditorTemplate(this._data);
+  }
+
+  reset(point) {
+    this.updateData(
+      PointEditor.parsePointToData(point),
+    );
+  }
+
+  static parsePointToData(point) {
+    return Object.assign(
+      {},
+      point,
+    );
+  }
+
+  static parseDataToPoint(data) {
+    data = Object.assign(
+      {},
+      data,
+    );
+
+    return data;
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setEditClickHandler(this._callback.editClick);
   }
 
   setFormSubmitHandler(callback) {
@@ -169,11 +203,49 @@ export default class PointEditor extends AbstractView {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(this._point);
+    this._callback.formSubmit(PointEditor.parseDataToPoint(this._data));
   }
 
   _editClickHandler(evt) {
     evt.preventDefault();
-    this._callback.editClick(this._point);
+    this._callback.editClick(this._data);
+  }
+
+  _pointTypeChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      offers: generateOffers(getRandomInteger(Count.OFFER)),
+      type: evt.target.value,
+    });
+  }
+
+  _destinationChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      destination: {
+        description: getRandomArrayItems(DESCRIPTIONS),
+        name: evt.target.value,
+        pictures: generatePictures(getRandomInteger(Count.PICTURES)),
+      },
+    });
+  }
+
+  _priceChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      basePrice: evt.target.value,
+    });
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector('.event__type-group')
+      .addEventListener('change', this._pointTypeChangeHandler);
+    this.getElement()
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this._destinationChangeHandler);
+    this.getElement()
+      .querySelector('.event__input--price')
+      .addEventListener('change', this._priceChangeHandler);
   }
 }
