@@ -1,7 +1,10 @@
+import flatpickr from 'flatpickr';
 import SmartView from './smart';
 import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count, BLANK_POINT} from '../const';
 import {dateToFormat, getRandomArrayItems, getRandomInteger} from '../utils/common';
 import {generatePictures, generateOffers} from '../mocks/points';
+
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createDestinationsListTemplate = (id) => {
   return `<datalist id="destination-list-${id}">
