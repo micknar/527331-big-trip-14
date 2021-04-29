@@ -39,7 +39,10 @@ export const dateToFormat = (date, format) => {
 };
 
 export const getPointDuration = (dateFrom, dateTo) => {
-  const diff = dateTo.diff(dateFrom);
+  const dateToSrc = dayjs(dateTo);
+  const dateFromSrc = dayjs(dateFrom);
+  const diff = dateToSrc.diff(dateFromSrc);
+
   let result;
 
   if ((diff / Millisecond.IN_DAY) >= 1) {
