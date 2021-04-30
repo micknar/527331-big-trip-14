@@ -31,7 +31,7 @@ export default class Point {
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointEditorComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._pointEditorComponent.setEditClickHandler(this._handleCloseClick);
+    this._pointEditorComponent.setCloseClickHandler(this._handleCloseClick);
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevPointComponent === null || prevPointEditorComponent === null) {
@@ -69,12 +69,14 @@ export default class Point {
 
   _replaceFormToPoint() {
     replace(this._pointComponent, this._pointEditorComponent);
+    this._pointEditorComponent.resetDatepickers();
     document.removeEventListener('keydown', this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;
   }
 
   _replacePointToForm() {
     replace(this._pointEditorComponent, this._pointComponent);
+    this._pointEditorComponent.setDatepickers();
     document.addEventListener('keydown', this._escKeyDownHandler);
     this._changeMode();
     this._mode = Mode.EDITING;

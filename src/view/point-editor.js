@@ -1,7 +1,11 @@
+import dayjs from 'dayjs';
+import flatpickr from 'flatpickr';
 import SmartView from './smart';
 import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count, BLANK_POINT} from '../const';
 import {dateToFormat, getRandomArrayItems, getRandomInteger} from '../utils/common';
 import {generatePictures, generateOffers} from '../mocks/points';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const createDestinationsListTemplate = (id) => {
   return `<datalist id="destination-list-${id}">
@@ -94,11 +98,11 @@ const createPointEditorTemplate = (point) => {
 
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-${id}">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time"
+          <input class="event__input event__input--time event__input--start" id="event-start-time-${id}" type="text" name="event-start-time"
           value="${dateToFormat(date.dateFrom, DateFormat.full)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-${id}">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time"
+          <input class="event__input event__input--time event__input--end" id="event-end-time-${id}" type="text" name="event-end-time"
           value="${dateToFormat(date.dateTo, DateFormat.full)}">
         </div>
 
@@ -132,24 +136,19 @@ export default class PointEditor extends SmartView {
   constructor(point = BLANK_POINT) {
     super();
     this._data = PointEditor.parsePointToData(point);
+    this._dateFromPicker = null;
+    this._dateToPicker = null;
+    this._minStartDate = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
-    this._editClickHandler = this._editClickHandler.bind(this);
+    this._closeClickHandler = this._closeClickHandler.bind(this);
     this._pointTypeChangeHandler = this._pointTypeChangeHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
+    this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
 
     this._setInnerHandlers();
-  }
-
-  getTemplate() {
-    return createPointEditorTemplate(this._data);
-  }
-
-  reset(point) {
-    this.updateData(
-      PointEditor.parsePointToData(point),
-    );
   }
 
   static parsePointToData(point) {
@@ -168,10 +167,63 @@ export default class PointEditor extends SmartView {
     return data;
   }
 
+  getTemplate() {
+    return createPointEditorTemplate(this._data);
+  }
+
+  reset(point) {
+    this.updateData(
+      PointEditor.parsePointToData(point),
+    );
+
+    this.resetDatepickers();
+  }
+
+  resetDatepickers() {
+    if (this._dateFromPicker) {
+      this._dateFromPicker.destroy();
+      this._dateFromPicker = null;
+    }
+
+    if (this._dateToPicker) {
+      this._dateToPicker.destroy();
+      this._dateToPicker = null;
+    }
+  }
+
   restoreHandlers() {
     this._setInnerHandlers();
+    this.setDatepickers();
     this.setFormSubmitHandler(this._callback.formSubmit);
-    this.setEditClickHandler(this._callback.editClick);
+    this.setCloseClickHandler(this._callback.closeClick);
+  }
+
+  setDatepickers() {
+    this.resetDatepickers();
+    this._minStartDate = this._data.date.dateTo;
+
+    this._dateFromPicker = flatpickr(
+      this.getElement().querySelector('.event__input--start'),
+      {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: dayjs(this._data.date.dateFrom).toDate(),
+        onChange: this._dateFromChangeHandler,
+      },
+    );
+
+    this._dateToPicker = flatpickr(
+      this.getElement().querySelector('.event__input--end'),
+      {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: 'd/m/y H:i',
+        minDate: dayjs(this._data.date.dateFrom).toDate(),
+        defaultDate: dayjs(this._data.date.dateTo).toDate(),
+        onChange: this._dateToChangeHandler,
+      },
+    );
   }
 
   setFormSubmitHandler(callback) {
@@ -179,19 +231,20 @@ export default class PointEditor extends SmartView {
     this.getElement().querySelector('.event--edit').addEventListener('submit', this._formSubmitHandler);
   }
 
-  setEditClickHandler(callback) {
-    this._callback.editClick = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  setCloseClickHandler(callback) {
+    this._callback.closeClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._closeClickHandler);
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit(PointEditor.parseDataToPoint(this._data));
+    this.resetDatepickers();
   }
 
-  _editClickHandler(evt) {
+  _closeClickHandler(evt) {
     evt.preventDefault();
-    this._callback.editClick(this._data);
+    this._callback.closeClick(this._data);
   }
 
   _pointTypeChangeHandler(evt) {
@@ -218,6 +271,39 @@ export default class PointEditor extends SmartView {
     this.updateData({
       basePrice: evt.target.value,
     }, true);
+  }
+
+  _dateFromChangeHandler([userDate]) {
+    this.updateData({
+      date: {
+        dateFrom: userDate,
+        dateTo: this._minStartDate <= userDate ? userDate : this._data.date.dateTo,
+      },
+    }, true);
+
+    this._dateToPicker.set('minDate', userDate);
+    this._dateToPicker.set('minTime', userDate);
+
+    if (this._minStartDate <= userDate) {
+      this._dateToPicker.setDate(userDate);
+      this._minStartDate = userDate;
+    }
+  }
+
+  _dateToChangeHandler([userDate]) {
+    this.updateData({
+      date: {
+        dateFrom: this._data.date.dateFrom,
+        dateTo: userDate,
+      },
+    }, true);
+
+    this._dateToPicker.setDate(userDate);
+
+    if (this._minStartDate > userDate) {
+      this._dateToPicker.set('minDate', userDate);
+      this._dateToPicker.set('minTime', userDate);
+    }
   }
 
   _setInnerHandlers() {

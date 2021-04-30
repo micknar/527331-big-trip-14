@@ -73,7 +73,7 @@ export const DateFormat = {
   dayMonth: 'DD MMM',
   monthDay: 'MMM DD',
   date: 'YYYY-MM-DD',
-  full: 'YY/MM/DD HH:mm',
+  full: 'DD/MM/YY HH:mm',
 };
 
 export const RenderPosition = {
