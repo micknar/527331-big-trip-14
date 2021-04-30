@@ -138,6 +138,7 @@ export default class PointEditor extends SmartView {
     this._data = PointEditor.parsePointToData(point);
     this._dateFromPicker = null;
     this._dateToPicker = null;
+    this._minStartDate = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._closeClickHandler = this._closeClickHandler.bind(this);
@@ -197,6 +198,34 @@ export default class PointEditor extends SmartView {
     this.setCloseClickHandler(this._callback.closeClick);
   }
 
+  setDatepickers() {
+    this.resetDatepickers();
+    this._minStartDate = this._data.date.dateTo;
+
+    this._dateFromPicker = flatpickr(
+      this.getElement().querySelector('.event__input--start'),
+      {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: dayjs(this._data.date.dateFrom).toDate(),
+        onChange: this._dateFromChangeHandler,
+      },
+    );
+
+    this._dateToPicker = flatpickr(
+      this.getElement().querySelector('.event__input--end'),
+      {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: 'd/m/y H:i',
+        minDate: dayjs(this._data.date.dateFrom).toDate(),
+        defaultDate: dayjs(this._data.date.dateTo).toDate(),
+        onChange: this._dateToChangeHandler,
+      },
+    );
+  }
+
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('.event--edit').addEventListener('submit', this._formSubmitHandler);
@@ -248,9 +277,17 @@ export default class PointEditor extends SmartView {
     this.updateData({
       date: {
         dateFrom: userDate,
-        dateTo: this._data.date.dateTo,
-      }
+        dateTo: this._minStartDate <= userDate ? userDate : this._data.date.dateTo,
+      },
     }, true);
+
+    this._dateToPicker.set('minDate', userDate);
+    this._dateToPicker.set('minTime', userDate);
+
+    if (this._minStartDate <= userDate) {
+      this._dateToPicker.setDate(userDate);
+      this._minStartDate = userDate;
+    }
   }
 
   _dateToChangeHandler([userDate]) {
@@ -258,8 +295,15 @@ export default class PointEditor extends SmartView {
       date: {
         dateFrom: this._data.date.dateFrom,
         dateTo: userDate,
-      }
+      },
     }, true);
+
+    this._dateToPicker.setDate(userDate);
+
+    if (this._minStartDate > userDate) {
+      this._dateToPicker.set('minDate', userDate);
+      this._dateToPicker.set('minTime', userDate);
+    }
   }
 
   _setInnerHandlers() {
@@ -272,36 +316,5 @@ export default class PointEditor extends SmartView {
     this.getElement()
       .querySelector('.event__input--price')
       .addEventListener('change', this._priceChangeHandler);
-  }
-
-  setDatepickers() {
-    this.resetDatepickers();
-
-    if (this._data.date.dateFrom) {
-      this._dateFromPicker = flatpickr(
-        this.getElement().querySelector('.event__input--start'),
-        {
-          enableTime: true,
-          time_24hr: true,
-          dateFormat: 'd/m/y H:i',
-          defaultDate: dayjs(this._data.date.dateFrom).toDate(),
-          onChange: this._dateFromChangeHandler,
-        }
-      );
-    }
-
-    if (this._data.date.dateTo) {
-      this._dateToPicker = flatpickr(
-        this.getElement().querySelector('.event__input--end'),
-        {
-          enableTime: true,
-          time_24hr: true,
-          dateFormat: 'd/m/y H:i',
-          minDate: dayjs(this._data.date.dateFrom).toDate(),
-          defaultDate: dayjs(this._data.date.dateTo).toDate(),
-          onChange: this._dateToChangeHandler,
-        }
-      );
-    }
   }
 }
