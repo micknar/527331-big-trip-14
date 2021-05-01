@@ -4,12 +4,13 @@ import SortView from '../view/sort';
 import PointsListView from '../view/points-list';
 import NoPointsView from '../view/no-points';
 import {render, remove} from '../utils/render';
-import {sortByPrice, sortByTime, sortByStartDate} from '../utils/common';
+import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../utils/common';
 import {SortType, UserAction, UpdateType} from '../const';
 
 export default class Trip {
-  constructor(tripContainer, pointsModel) {
+  constructor(tripContainer, pointsModel, filterModel) {
     this._tripContainer = tripContainer;
+    this._filterModel = filterModel;
     this._pointsModel = pointsModel;
     this._pointPresenter = {};
 
@@ -24,10 +25,12 @@ export default class Trip {
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
   }
 
   init() {
     this._renderTripEvents();
+    this._filterModel.addObserver(this._handleModelEvent);
     this._pointsModel.addObserver(this._handleModelEvent);
   }
 
@@ -79,6 +82,8 @@ export default class Trip {
   }
 
   _clearTrip({resetSortComponent = false, resetSortType = false} = {}) {
+    remove(this._noPointsComponent);
+
     Object
       .values(this._pointPresenter)
       .forEach((presenter) => presenter.destroy());
@@ -98,13 +103,18 @@ export default class Trip {
   }
 
   _getPoints() {
+    const filterType = this._filterModel.getFilter();
+    const points = this._pointsModel.getPoints().slice();
+    const filteredPoints = getFilteredPoints(points, filterType);
+
+
     switch (this._currentSortType) {
       case SortType.PRICE:
-        return sortByPrice(this._pointsModel.getPoints());
+        return sortByPrice(filteredPoints);
       case SortType.TIME:
-        return sortByTime(this._pointsModel.getPoints());
+        return sortByTime(filteredPoints);
       default:
-        return sortByStartDate(this._pointsModel.getPoints());
+        return sortByStartDate(filteredPoints);
     }
   }
 
@@ -122,6 +132,16 @@ export default class Trip {
     this._currentSortType = sortType;
 
     this._clearTrip({resetSortComponent: true});
+    this._renderTripEvents();
+  }
+
+  _handleFilterTypeChange(filterType) {
+    if (this._activeFilter === filterType) {
+      return;
+    }
+
+    this._activeFilter = filterType;
+    this._clearTrip({resetSortComponent: true, resetSortType: true});
     this._renderTripEvents();
   }
 
