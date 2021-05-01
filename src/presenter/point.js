@@ -1,7 +1,7 @@
 import PointView from '../view/point';
 import PointEditorView from '../view/point-editor';
 import {render, replace, remove} from '../utils/render';
-import {Mode} from '../const';
+import {Mode, UserAction, UpdateType} from '../const';
 
 export default class Point {
   constructor(pointContainer, changeData, changeMode) {
@@ -90,7 +90,11 @@ export default class Point {
   }
 
   _handleFormSubmit(point) {
-    this._changeData(point);
+    this._changeData(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
     this._replaceFormToPoint();
   }
 
@@ -104,6 +108,8 @@ export default class Point {
 
   _handleFavoriteClick() {
     this._changeData(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._point,

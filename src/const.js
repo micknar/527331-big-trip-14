@@ -48,8 +48,9 @@ export const Millisecond = {
 };
 
 export const UserAction = {
-  ADD_POINT: 'add',
-  EDIT_POINT: 'edit',
+  ADD_POINT: 'ADD_POINT',
+  UPDATE_POINT: 'UPDATE_POINT',
+  DELETE_POINT: 'DELETE_POINT',
 };
 
 export const FilterType = {
@@ -109,4 +110,10 @@ export const BLANK_POINT = {
   },
   offers: [],
   type: POINT_TYPES[0],
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
 };
