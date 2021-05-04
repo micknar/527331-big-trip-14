@@ -245,7 +245,11 @@ export default class PointEditor extends SmartView {
 
   setCloseClickHandler(callback) {
     this._callback.closeClick = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._closeClickHandler);
+    const closeBtn = this.getElement().querySelector('.event__rollup-btn');
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', this._closeClickHandler);
+    }
   }
 
   _formSubmitHandler(evt) {
