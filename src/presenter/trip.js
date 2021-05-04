@@ -3,7 +3,7 @@ import MainNavView from '../view/main-nav';
 import SortView from '../view/sort';
 import PointsListView from '../view/points-list';
 import NoPointsView from '../view/no-points';
-import {render, remove} from '../utils/render';
+import {render, replace, remove} from '../utils/render';
 import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../utils/common';
 import {SortType, UserAction, UpdateType} from '../const';
 
@@ -25,13 +25,27 @@ export default class Trip {
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-    this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
   }
 
   init() {
     this._renderTripEvents();
     this._filterModel.addObserver(this._handleModelEvent);
     this._pointsModel.addObserver(this._handleModelEvent);
+  }
+
+  _getPoints() {
+    const filterType = this._filterModel.getFilter();
+    const points = this._pointsModel.getPoints().slice();
+    const filteredPoints = getFilteredPoints(points, filterType);
+
+    switch (this._currentSortType) {
+      case SortType.PRICE:
+        return sortByPrice(filteredPoints);
+      case SortType.TIME:
+        return sortByTime(filteredPoints);
+      default:
+        return sortByStartDate(filteredPoints);
+    }
   }
 
   _renderTripEvents() {
@@ -41,9 +55,17 @@ export default class Trip {
   }
 
   _renderSort() {
+    const prevSortComponent = this._sortComponent;
+
     this._sortComponent = new SortView(this._currentSortType);
-    render(this._tripContainer, this._sortComponent);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+
+    if (prevSortComponent) {
+      replace(this._sortComponent, prevSortComponent);
+      remove(prevSortComponent);
+    } else {
+      render(this._tripContainer, this._sortComponent);
+    }
   }
 
   _renderPointsListContainer() {
@@ -54,6 +76,7 @@ export default class Trip {
   _renderNoPoints() {
     if (this._sortComponent) {
       remove(this._sortComponent);
+      this._sortComponent = null;
     }
 
     this._noPointsComponent = new NoPointsView();
@@ -81,7 +104,7 @@ export default class Trip {
     this._pointPresenter[point.id] = pointPresenter;
   }
 
-  _clearTrip({resetSortComponent = false, resetSortType = false} = {}) {
+  _clearTrip({resetSortType = false} = {}) {
     remove(this._noPointsComponent);
 
     Object
@@ -90,31 +113,11 @@ export default class Trip {
 
     this._pointPresenter = {};
 
-    if (resetSortComponent) {
-      remove(this._pointsListComponent);
-      remove(this._sortComponent);
-    }
-
     if (resetSortType) {
       remove(this._pointsListComponent);
       remove(this._sortComponent);
-      this._currentSortType = SortType.DEFAULT;
-    }
-  }
-
-  _getPoints() {
-    const filterType = this._filterModel.getFilter();
-    const points = this._pointsModel.getPoints().slice();
-    const filteredPoints = getFilteredPoints(points, filterType);
-
-
-    switch (this._currentSortType) {
-      case SortType.PRICE:
-        return sortByPrice(filteredPoints);
-      case SortType.TIME:
-        return sortByTime(filteredPoints);
-      default:
-        return sortByStartDate(filteredPoints);
+      this._sortComponent = null;
+      this._currentSortType = SortType.DAY;
     }
   }
 
@@ -131,18 +134,9 @@ export default class Trip {
 
     this._currentSortType = sortType;
 
-    this._clearTrip({resetSortComponent: true});
-    this._renderTripEvents();
-  }
-
-  _handleFilterTypeChange(filterType) {
-    if (this._activeFilter === filterType) {
-      return;
-    }
-
-    this._activeFilter = filterType;
-    this._clearTrip({resetSortComponent: true, resetSortType: true});
-    this._renderTripEvents();
+    this._clearTrip();
+    this._renderSort();
+    this._renderTrip();
   }
 
   _handleViewAction(actionType, updateType, update) {
@@ -165,8 +159,9 @@ export default class Trip {
         this._pointPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
-        this._clearTrip({resetSortComponent: true});
-        this._renderTripEvents();
+        this._clearTrip();
+        this._renderSort();
+        this._renderTrip();
         break;
       case UpdateType.MAJOR:
         this._clearTrip({resetSortType: true});

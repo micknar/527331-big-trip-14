@@ -159,3 +159,5 @@ export const sortByTime = (points) => {
 export const sortByPrice = (points) => {
   return points.sort((a, b) => b.basePrice - a.basePrice);
 };
+
+export const setInputChecked = (active, type) => active === type ? 'checked' : '';
