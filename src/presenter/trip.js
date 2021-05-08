@@ -40,9 +40,7 @@ export default class Trip {
     this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._handleViewAction);
   }
 
-  createPoint(addPointButton) {
-    addPointButton.disabled = true;
-
+  createPoint() {
     this._currentSortType = SortType.DAY;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this._pointNewPresenter.init();

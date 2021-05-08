@@ -20,7 +20,7 @@ const tripPresenter = new TripPresenter(Container.EVENTS, pointsModel, filterMod
 const filterPresenter = new FilterPresenter(Container.FILTERS, filterModel, pointsModel);
 
 addPointButton.addEventListener('click', () => {
-  tripPresenter.createPoint(addPointButton);
+  tripPresenter.createPoint();
 });
 
 render(Container.MENU, new MainNavView());

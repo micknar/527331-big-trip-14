@@ -1,6 +1,6 @@
 import PointEditorView from '../view/point-editor';
 import {render, remove} from '../utils/render';
-import { generateId } from '../utils/common';
+import {generateId} from '../utils/common';
 import {UserAction, UpdateType, RenderPosition} from '../const';
 
 export default class PointNew {
@@ -13,9 +13,13 @@ export default class PointNew {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
+
+    this._addPointBtn = document.querySelector('.trip-main__event-add-btn');
   }
 
   init() {
+    this._addPointBtn.disabled = true;
+
     if (this._pointEditorComponent !== null) {
       return;
     }
@@ -37,6 +41,7 @@ export default class PointNew {
 
     remove(this._pointEditorComponent);
     this._pointEditorComponent = null;
+    this._addPointBtn.disabled = false;
 
     document.removeEventListener('keydown', this._escKeyDownHandler);
   }
@@ -44,7 +49,7 @@ export default class PointNew {
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       this.destroy();
-      document.querySelector('.trip-main__event-add-btn').disabled = false;
+      this._addPointBtn.disabled = false;
     }
   }
 
@@ -55,11 +60,11 @@ export default class PointNew {
       Object.assign({}, point, {id: generateId()}),
     );
     this.destroy();
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
+    this._addPointBtn.disabled = false;
   }
 
   _handleDeleteClick() {
     this.destroy();
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
+    this._addPointBtn.disabled = false;
   }
 }
