@@ -51,21 +51,36 @@ const createOffersTemplate = (id, offers) => {
   }
 };
 
-const createDestinationTemplate = (destination) => {
-  const {description, pictures} = destination;
+const createDescriptionTemplate = (description) => {
+  if (description.length !== 0) {
+    return `<p class="event__destination-description">${description}</p>`;
+  } else {
+    return '';
+  }
+};
 
-  if (Object.keys(destination).length !== 0) {
-    return `<section class="event__section  event__section--destination">
-      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${description}</p>
-
-      <div class="event__photos-container">
-        <div class="event__photos-tape">
+const createPicturesTemplate = (pictures) => {
+  if (pictures.length !== 0) {
+    return `<div class="event__photos-container">
+    <div class="event__photos-tape">
   ${pictures.map((picture) => {
     return `<img class="event__photo" src="${picture.src}" alt="${picture.alt}">`;
   }).join('')}
-        </div>
-      </div>
+    </div>
+  </div>`;
+  } else {
+    return '';
+  }
+};
+
+const createDestinationTemplate = (destination) => {
+  const {description, pictures} = destination;
+
+  if (description || pictures.length !== 0) {
+    return `<section class="event__section  event__section--destination">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      ${createDescriptionTemplate(description)}
+      ${createPicturesTemplate(pictures)}
     </section>`;
   } else {
     return '';
