@@ -28,6 +28,7 @@ export const generatePictures = (count) => new Array(count).fill(' ').map(genera
 const generateOffer = () => {
   return {
     title: getRandomArrayItem(OFFERS),
+    isChecked: getRandomBoolean(),
     price: getRandomInteger(PRICE_MAX),
   };
 };

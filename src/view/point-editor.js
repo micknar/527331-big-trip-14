@@ -36,7 +36,8 @@ const createOffersTemplate = (id, offers) => {
       <div class="event__available-offers">
   ${offers.map((offer) => {
     return `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${id}" type="checkbox" name="event-offer-${offer.title}">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${id}" type="checkbox" name="event-offer-${offer.title}"
+      data-offer-title="${offer.title}" ${offer.isChecked ? 'checked' : ''} >
       <label class="event__offer-label" for="event-offer-${offer.title}-${id}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
@@ -160,6 +161,7 @@ export default class PointEditor extends SmartView {
     this._closeClickHandler = this._closeClickHandler.bind(this);
     this._pointTypeChangeHandler = this._pointTypeChangeHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
+    this._offerToggleHandler = this._offerToggleHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
     this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
     this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
@@ -302,6 +304,18 @@ export default class PointEditor extends SmartView {
     });
   }
 
+  _offerToggleHandler(evt) {
+    this.updateData({
+      offers: this._data.offers.map((offer) => {
+        if (offer.title === evt.target.dataset.offerTitle) {
+          offer.isChecked = !offer.isChecked;
+        }
+
+        return offer;
+      }),
+    });
+  }
+
   _priceChangeHandler(evt) {
     evt.preventDefault();
     this.updateData({
@@ -346,11 +360,19 @@ export default class PointEditor extends SmartView {
     this.getElement()
       .querySelector('.event__type-group')
       .addEventListener('change', this._pointTypeChangeHandler);
+
     this.getElement()
       .querySelector('.event__input--destination')
       .addEventListener('change', this._destinationChangeHandler);
+
     this.getElement()
       .querySelector('.event__input--price')
       .addEventListener('change', this._priceChangeHandler);
+
+    if (this.getElement().querySelector('.event__available-offers') !== null) {
+      this.getElement()
+        .querySelector('.event__available-offers')
+        .addEventListener('change', this._offerToggleHandler);
+    }
   }
 }

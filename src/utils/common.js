@@ -148,6 +148,18 @@ export const getTotalPrice = (item, price) => {
   return result;
 };
 
+export const getPointPrice = (basePrice, offers) => {
+  let offersPrice = 0;
+
+  offers.forEach((offer) => {
+    if (offer.isChecked) {
+      offersPrice += offer.price;
+    }
+  });
+
+  return basePrice + offersPrice;
+};
+
 export const sortByStartDate = (points) => {
   return points.sort((a, b) => Date.parse(a.date.dateFrom) - Date.parse(b.date.dateFrom));
 };
