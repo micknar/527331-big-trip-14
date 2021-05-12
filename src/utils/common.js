@@ -148,22 +148,20 @@ export const getTotalPrice = (item, price) => {
   return result;
 };
 
-export const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
+export const getPointPrice = (basePrice, offers) => {
+  let offersPrice = 0;
 
-  if (index === -1) {
-    return items;
-  }
+  offers.forEach((offer) => {
+    if (offer.isChecked) {
+      offersPrice += offer.price;
+    }
+  });
 
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
+  return basePrice + offersPrice;
 };
 
 export const sortByStartDate = (points) => {
-  return points.slice().sort((a, b) => Date.parse(a.date.dateFrom) - Date.parse(b.date.dateFrom));
+  return points.sort((a, b) => Date.parse(a.date.dateFrom) - Date.parse(b.date.dateFrom));
 };
 
 export const sortByTime = (points) => {
@@ -173,3 +171,5 @@ export const sortByTime = (points) => {
 export const sortByPrice = (points) => {
   return points.sort((a, b) => b.basePrice - a.basePrice);
 };
+
+export const setInputChecked = (active, type) => active === type ? 'checked' : '';

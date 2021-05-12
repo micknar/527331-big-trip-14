@@ -36,7 +36,8 @@ const createOffersTemplate = (id, offers) => {
       <div class="event__available-offers">
   ${offers.map((offer) => {
     return `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${id}" type="checkbox" name="event-offer-${offer.title}">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${id}" type="checkbox" name="event-offer-${offer.title}"
+      data-offer-title="${offer.title}" ${offer.isChecked ? 'checked' : ''} >
       <label class="event__offer-label" for="event-offer-${offer.title}-${id}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
@@ -51,21 +52,36 @@ const createOffersTemplate = (id, offers) => {
   }
 };
 
-const createDestinationTemplate = (destination) => {
-  const {description, pictures} = destination;
+const createDescriptionTemplate = (description) => {
+  if (description.length !== 0) {
+    return `<p class="event__destination-description">${description}</p>`;
+  } else {
+    return '';
+  }
+};
 
-  if (Object.keys(destination).length !== 0) {
-    return `<section class="event__section  event__section--destination">
-      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${description}</p>
-
-      <div class="event__photos-container">
-        <div class="event__photos-tape">
+const createPicturesTemplate = (pictures) => {
+  if (pictures.length !== 0) {
+    return `<div class="event__photos-container">
+    <div class="event__photos-tape">
   ${pictures.map((picture) => {
     return `<img class="event__photo" src="${picture.src}" alt="${picture.alt}">`;
   }).join('')}
-        </div>
-      </div>
+    </div>
+  </div>`;
+  } else {
+    return '';
+  }
+};
+
+const createDestinationTemplate = (destination) => {
+  const {description, pictures} = destination;
+
+  if (description || pictures.length !== 0) {
+    return `<section class="event__section  event__section--destination">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      ${createDescriptionTemplate(description)}
+      ${createPicturesTemplate(pictures)}
     </section>`;
   } else {
     return '';
@@ -141,9 +157,11 @@ export default class PointEditor extends SmartView {
     this._minStartDate = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._closeClickHandler = this._closeClickHandler.bind(this);
     this._pointTypeChangeHandler = this._pointTypeChangeHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
+    this._offerToggleHandler = this._offerToggleHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
     this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
     this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
@@ -195,7 +213,13 @@ export default class PointEditor extends SmartView {
     this._setInnerHandlers();
     this.setDatepickers();
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
     this.setCloseClickHandler(this._callback.closeClick);
+  }
+
+  removeElement() {
+    super.removeElement();
+    this.resetDatepickers();
   }
 
   setDatepickers() {
@@ -231,15 +255,29 @@ export default class PointEditor extends SmartView {
     this.getElement().querySelector('.event--edit').addEventListener('submit', this._formSubmitHandler);
   }
 
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
+  }
+
   setCloseClickHandler(callback) {
     this._callback.closeClick = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._closeClickHandler);
+    const closeBtn = this.getElement().querySelector('.event__rollup-btn');
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', this._closeClickHandler);
+    }
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit(PointEditor.parseDataToPoint(this._data));
     this.resetDatepickers();
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(PointEditor.parseDataToPoint(this._data));
   }
 
   _closeClickHandler(evt) {
@@ -263,6 +301,18 @@ export default class PointEditor extends SmartView {
         name: evt.target.value,
         pictures: generatePictures(getRandomInteger(Count.PICTURES)),
       },
+    });
+  }
+
+  _offerToggleHandler(evt) {
+    this.updateData({
+      offers: this._data.offers.map((offer) => {
+        if (offer.title === evt.target.dataset.offerTitle) {
+          offer.isChecked = !offer.isChecked;
+        }
+
+        return offer;
+      }),
     });
   }
 
@@ -310,11 +360,19 @@ export default class PointEditor extends SmartView {
     this.getElement()
       .querySelector('.event__type-group')
       .addEventListener('change', this._pointTypeChangeHandler);
+
     this.getElement()
       .querySelector('.event__input--destination')
       .addEventListener('change', this._destinationChangeHandler);
+
     this.getElement()
       .querySelector('.event__input--price')
       .addEventListener('change', this._priceChangeHandler);
+
+    if (this.getElement().querySelector('.event__available-offers') !== null) {
+      this.getElement()
+        .querySelector('.event__available-offers')
+        .addEventListener('change', this._offerToggleHandler);
+    }
   }
 }

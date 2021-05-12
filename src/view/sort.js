@@ -1,7 +1,7 @@
 import AbstractView from './abstract';
 import {SortType} from '../const';
+import {setInputChecked} from '../utils/common';
 
-const setChecked = (currentSortType, sortType) => currentSortType === sortType ? 'checked' : '';
 const setDisabled = (sortType) => sortType === SortType.EVENT || sortType === SortType.OFFER ? 'disabled' : '';
 const getSortTitle = (sortType) => sortType === SortType.OFFER ? 'offers' : sortType;
 
@@ -11,7 +11,7 @@ const createSortTemplate = (currentSortType) => {
     return `<div class="trip-sort__item trip-sort__item--${type}">
       <input id="sort-${type}" class="trip-sort__input visually-hidden" type="radio"
       name="trip-sort" value="sort-${type}" data-sort-type="${type}"
-      ${setDisabled(type)} ${setChecked(currentSortType, type)} >
+      ${setDisabled(type)} ${setInputChecked(currentSortType, type)} >
       <label class="trip-sort__btn" for="sort-${type}">${getSortTitle(type)}</label>
     </div>`;
   }).join('')}

@@ -1,17 +1,29 @@
 import AbstractView from './abstract';
-import {dateToFormat, getPointDuration} from '../utils/common';
+import {dateToFormat, getPointDuration, getPointPrice} from '../utils/common';
 import {DateFormat} from '../const';
 
 const createOffersTemplate = (offers) => {
-  return `<ul class="event__selected-offers">
-  ${offers.map((offer) => {
+  const checkedOffers = [];
+
+  offers.forEach((offer) => {
+    if (offer.isChecked) {
+      checkedOffers.push(offer);
+    }
+  });
+
+  if (checkedOffers.length > 0) {
+    return `<ul class="event__selected-offers">
+      ${checkedOffers.map((offer) => {
     return `<li class="event__offer">
-      <span class="event__offer-title">${offer.title}</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offer.price}</span>
-    </li>`;
+        <span class="event__offer-title">${offer.title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offer.price}</span>
+      </li>`;
   }).join('')}
-  </ul>`;
+    </ul>`;
+  } else {
+    return '';
+  }
 };
 
 const createPointTemplate = (point) => {
@@ -44,7 +56,7 @@ const createPointTemplate = (point) => {
         <p class="event__duration">${getPointDuration(dateFrom, dateTo)}</p>
       </div>
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+        &euro;&nbsp;<span class="event__price-value">${getPointPrice(basePrice, offers)}</span>
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       ${createOffersTemplate(offers)}
