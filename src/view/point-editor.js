@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
+import he from 'he';
 import SmartView from './smart';
 import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count, BLANK_POINT} from '../const';
 import {dateToFormat, getRandomArrayItems, getRandomInteger} from '../utils/common';
@@ -108,7 +109,8 @@ const createPointEditorTemplate = (point) => {
           <label class="event__label  event__type-output" for="event-destination-${id}">
             ${type}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${destination.name}" list="destination-list-${id}">
+          <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination"
+          value="${he.encode(destination.name)}" list="destination-list-${id}">
           ${createDestinationsListTemplate(id)}
         </div>
 
@@ -127,7 +129,7 @@ const createPointEditorTemplate = (point) => {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" 
+          <input class="event__input  event__input--price" id="event-price-${id}" type="number" min="0" name="event-price" 
           value="${basePrice}">
         </div>
 
