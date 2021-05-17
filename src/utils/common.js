@@ -90,14 +90,14 @@ export const getFilteredPoints = (points, filterType) => {
     case FilterType.EVERYTHING:
       return points;
     case FilterType.FUTURE:
-      return points.filter((point) => isFutureDate(currentDate, point.date.dateFrom));
+      return points.filter((point) => isFutureDate(currentDate, point.dateFrom));
     case FilterType.PAST:
-      return points.filter((point) => isPastDate(currentDate, point.date.dateFrom));
+      return points.filter((point) => isPastDate(currentDate, point.dateFrom));
   }
 };
 
 export const getRoute = (points) => {
-  points = points.slice().sort((a, b) => Date.parse(a.date.dateFrom) - Date.parse(b.date.dateFrom));
+  points = points.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
 
   const cities = new Set(points
     .slice()
@@ -120,8 +120,8 @@ export const getRoute = (points) => {
 };
 
 export const getRouteDates = (points) => {
-  let dates = points.slice().sort((a, b) => Date.parse(a.date.dateFrom) - Date.parse(b.date.dateFrom));
-  dates = [new Date(dates[0].date.dateFrom), new Date(dates[dates.length - 1].date.dateTo)];
+  let dates = points.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
+  dates = [new Date(dates[0].dateFrom), new Date(dates[dates.length - 1].dateTo)];
 
   const finishDate = dateToFormat(dates[1], DateFormat.dayMonth);
 
@@ -161,11 +161,11 @@ export const getPointPrice = (basePrice, offers) => {
 };
 
 export const sortByStartDate = (points) => {
-  return points.sort((a, b) => Date.parse(a.date.dateFrom) - Date.parse(b.date.dateFrom));
+  return points.sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
 };
 
 export const sortByTime = (points) => {
-  return points.sort((a, b) => dayjs(b.date.dateTo).diff(dayjs(b.date.dateFrom)) - dayjs(a.date.dateTo).diff(dayjs(a.date.dateFrom)));
+  return points.sort((a, b) => dayjs(b.dateTo).diff(dayjs(b.dateFrom)) - dayjs(a.dateTo).diff(dayjs(a.dateFrom)));
 };
 
 export const sortByPrice = (points) => {
