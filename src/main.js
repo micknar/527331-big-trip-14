@@ -1,33 +1,42 @@
 import TripMainView from './view/trip-main';
 import MainNavView from './view/main-nav';
 import {render} from './utils/render';
-import {Container, Count, RenderPosition} from './const';
-import {generatePoints} from './mocks/points';
+import {Container, RenderPosition, UpdateType} from './const';
 import TripPresenter from './presenter/trip';
 import FilterPresenter from './presenter/filter.js';
 import PointsModel from './model/points';
 import FilterModel from './model/filter';
+import Api from './api';
 
-const addPointButton = document.querySelector('.trip-main__event-add-btn');
-const points = generatePoints(Count.EVENT);
+const AUTHORIZATION = 'Basic dgdf12dafgasd';
+const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
+
+const addPointBtn = document.querySelector('.trip-main__event-add-btn');
+const api = new Api(END_POINT, AUTHORIZATION);
 
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 
-pointsModel.setPoints(points);
-
-const tripPresenter = new TripPresenter(Container.EVENTS, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(Container.EVENTS, pointsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(Container.FILTERS, filterModel, pointsModel);
 
-addPointButton.addEventListener('click', () => {
+addPointBtn.addEventListener('click', () => {
   tripPresenter.createPoint();
 });
 
 render(Container.MENU, new MainNavView());
 
-if (points.length > 0) {
-  render(Container.MAIN, new TripMainView(points), RenderPosition.AFTERBEGIN);
-}
-
 filterPresenter.init();
 tripPresenter.init();
+
+api.getPoints()
+  .then((points) => {
+    pointsModel.setPoints(UpdateType.INIT, points);
+
+    if (points.length > 0) {
+      render(Container.MAIN, new TripMainView(points), RenderPosition.AFTERBEGIN);
+    }
+  })
+  .catch(() => {
+    pointsModel.setPoints(UpdateType.INIT, []);
+  });

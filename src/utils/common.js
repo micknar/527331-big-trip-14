@@ -169,7 +169,7 @@ export const sortByTime = (points) => {
 };
 
 export const sortByPrice = (points) => {
-  return points.sort((a, b) => b.basePrice - a.basePrice);
+  return points.sort((a, b) => getPointPrice(b.basePrice, b.offers) - getPointPrice(a.basePrice, a.offers));
 };
 
 export const setInputChecked = (active, type) => active === type ? 'checked' : '';
