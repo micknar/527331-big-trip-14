@@ -4,7 +4,7 @@ import MainNavView from '../view/main-nav';
 import SortView from '../view/sort';
 import PointsListView from '../view/points-list';
 import NoPointsView from '../view/no-points';
-import LoadingView from '../view/loading.js';
+import LoadingView from '../view/loading';
 import {render, replace, remove} from '../utils/render';
 import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../utils/common';
 import {SortType, UserAction, UpdateType, FilterType, RenderPosition} from '../const';
@@ -198,7 +198,7 @@ export default class Trip {
         this._isLoading = false;
         remove(this._loadingComponent);
         this._addPointBtn.disabled = false;
-        this._renderSort()
+        this._renderSort();
         this._renderTrip();
         break;
     }
