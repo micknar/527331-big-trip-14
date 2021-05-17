@@ -165,7 +165,7 @@ export const sortByStartDate = (points) => {
 };
 
 export const sortByTime = (points) => {
-  return points.sort((a, b) => b.date.dateTo.diff(b.date.dateFrom) - a.date.dateTo.diff(a.date.dateFrom));
+  return points.sort((a, b) => dayjs(b.date.dateTo).diff(dayjs(b.date.dateFrom)) - dayjs(a.date.dateTo).diff(dayjs(a.date.dateFrom)));
 };
 
 export const sortByPrice = (points) => {

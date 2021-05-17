@@ -8,7 +8,7 @@ import PointsModel from './model/points';
 import FilterModel from './model/filter';
 import Api from './api';
 
-const AUTHORIZATION = 'Basic dgdf12dafgasd';
+const AUTHORIZATION = 'Basic dgdf12dcasd';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const addPointBtn = document.querySelector('.trip-main__event-add-btn');
