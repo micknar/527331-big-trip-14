@@ -27,8 +27,7 @@ const createOffersTemplate = (offers) => {
 };
 
 const createPointTemplate = (point) => {
-  const {date, destination, basePrice, id, isFavorite, type, offers} = point;
-  const {dateFrom, dateTo} = date;
+  const {dateFrom, dateTo, destination, basePrice, id, isFavorite, type, offers} = point;
   const {name} = destination;
 
   return `<li class="trip-events__item">

@@ -99,10 +99,8 @@ export const Mode = {
 export const BLANK_POINT = {
   id: -1,
   basePrice: '',
-  date: {
-    dateFrom: new Date(),
-    dateTo: new Date(),
-  },
+  dateFrom: new Date(),
+  dateTo: new Date(),
   destination: {
     name: POINTS[0],
     pictures: [],
@@ -116,4 +114,5 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };

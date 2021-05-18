@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
+import he from 'he';
 import SmartView from './smart';
 import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count, BLANK_POINT} from '../const';
 import {dateToFormat, getRandomArrayItems, getRandomInteger} from '../utils/common';
@@ -89,7 +90,7 @@ const createDestinationTemplate = (destination) => {
 };
 
 const createPointEditorTemplate = (point) => {
-  const {id, type, date, basePrice, offers, destination} = point;
+  const {id, type, dateTo, dateFrom, basePrice, offers, destination} = point;
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -108,18 +109,19 @@ const createPointEditorTemplate = (point) => {
           <label class="event__label  event__type-output" for="event-destination-${id}">
             ${type}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${destination.name}" list="destination-list-${id}">
+          <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination"
+          value="${he.encode(destination.name)}" list="destination-list-${id}">
           ${createDestinationsListTemplate(id)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-${id}">From</label>
           <input class="event__input event__input--time event__input--start" id="event-start-time-${id}" type="text" name="event-start-time"
-          value="${dateToFormat(date.dateFrom, DateFormat.full)}">
+          value="${dateToFormat(dateFrom, DateFormat.full)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-${id}">To</label>
           <input class="event__input event__input--time event__input--end" id="event-end-time-${id}" type="text" name="event-end-time"
-          value="${dateToFormat(date.dateTo, DateFormat.full)}">
+          value="${dateToFormat(dateTo, DateFormat.full)}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -127,7 +129,7 @@ const createPointEditorTemplate = (point) => {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" 
+          <input class="event__input  event__input--price" id="event-price-${id}" type="number" min="0" name="event-price" 
           value="${basePrice}">
         </div>
 
@@ -224,7 +226,7 @@ export default class PointEditor extends SmartView {
 
   setDatepickers() {
     this.resetDatepickers();
-    this._minStartDate = this._data.date.dateTo;
+    this._minStartDate = this._data.dateTo;
 
     this._dateFromPicker = flatpickr(
       this.getElement().querySelector('.event__input--start'),
@@ -232,7 +234,7 @@ export default class PointEditor extends SmartView {
         enableTime: true,
         time_24hr: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: dayjs(this._data.date.dateFrom).toDate(),
+        defaultDate: dayjs(this._data.dateFrom).toDate(),
         onChange: this._dateFromChangeHandler,
       },
     );
@@ -243,8 +245,8 @@ export default class PointEditor extends SmartView {
         enableTime: true,
         time_24hr: true,
         dateFormat: 'd/m/y H:i',
-        minDate: dayjs(this._data.date.dateFrom).toDate(),
-        defaultDate: dayjs(this._data.date.dateTo).toDate(),
+        minDate: dayjs(this._data.dateFrom).toDate(),
+        defaultDate: dayjs(this._data.dateTo).toDate(),
         onChange: this._dateToChangeHandler,
       },
     );
@@ -325,10 +327,8 @@ export default class PointEditor extends SmartView {
 
   _dateFromChangeHandler([userDate]) {
     this.updateData({
-      date: {
-        dateFrom: userDate,
-        dateTo: this._minStartDate <= userDate ? userDate : this._data.date.dateTo,
-      },
+      dateFrom: userDate,
+      dateTo: this._minStartDate <= userDate ? userDate : this._data.dateTo,
     }, true);
 
     this._dateToPicker.set('minDate', userDate);
@@ -342,10 +342,8 @@ export default class PointEditor extends SmartView {
 
   _dateToChangeHandler([userDate]) {
     this.updateData({
-      date: {
-        dateFrom: this._data.date.dateFrom,
-        dateTo: userDate,
-      },
+      dateFrom: this._data.dateFrom,
+      dateTo: userDate,
     }, true);
 
     this._dateToPicker.setDate(userDate);
