@@ -1,4 +1,5 @@
 import {createElement} from '../utils/render';
+import {ERROR_ANIMATION_TIMEOUT, ERROR_ANIMATION_STYLE} from '../const';
 
 export default class Abstract {
   constructor() {
@@ -24,5 +25,14 @@ export default class Abstract {
 
   removeElement() {
     this._element = null;
+  }
+
+  shake(callback) {
+    this.getElement().style = ERROR_ANIMATION_STYLE;
+
+    setTimeout(() => {
+      this.getElement().style = '';
+      callback();
+    }, ERROR_ANIMATION_TIMEOUT);
   }
 }

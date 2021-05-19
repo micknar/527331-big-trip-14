@@ -7,7 +7,7 @@ import NoPointsView from '../view/no-points';
 import LoadingView from '../view/loading';
 import {render, replace, remove} from '../utils/render';
 import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../utils/common';
-import {SortType, UserAction, UpdateType, FilterType, RenderPosition} from '../const';
+import {SortType, UserAction, UpdateType, FilterType, RenderPosition, State as PointPresenterViewState} from '../const';
 
 export default class Trip {
   constructor(tripContainer, pointsModel, filterModel, api) {
@@ -166,19 +166,34 @@ export default class Trip {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this._api.updatePoint(update).then((response) => {
-          this._pointsModel.updatePoint(updateType, response);
-        });
+        this._pointPresenter[update.id].setViewState(PointPresenterViewState.SAVING);
+        this._api.updatePoint(update)
+          .then((response) => {
+            this._pointsModel.updatePoint(updateType, response);
+          })
+          .catch(() => {
+            this._pointPresenter[update.id].setViewState(PointPresenterViewState.ABORTING);
+          });
         break;
       case UserAction.ADD_POINT:
-        this._api.addPoint(update).then((response) => {
-          this._pointsModel.addPoint(updateType, response);
-        });
+        this._pointNewPresenter[update.id].setSaving();
+        this._api.addPoint(update)
+          .then((response) => {
+            this._pointsModel.addPoint(updateType, response);
+          })
+          .catch(() => {
+            this._pointNewPresenter.setAborting();
+          });
         break;
       case UserAction.DELETE_POINT:
-        this._api.deletePoint(update).then(() => {
-          this._pointsModel.deletePoint(updateType, update);
-        });
+        this._pointPresenter[update.id].setViewState(PointPresenterViewState.DELETING);
+        this._api.deletePoint(update)
+          .then(() => {
+            this._pointsModel.deletePoint(updateType, update);
+          })
+          .catch(() => {
+            this._pointPresenter[update.id].setViewState(PointPresenterViewState.ABORTING);
+          });
         break;
     }
   }

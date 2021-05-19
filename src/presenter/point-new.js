@@ -46,6 +46,25 @@ export default class PointNew {
     document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
+  setSaving() {
+    this._pointEditorComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this._pointEditorComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this._pointEditorComponent.shake(resetFormState);
+  }
+
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       this.destroy();
@@ -59,7 +78,6 @@ export default class PointNew {
       UpdateType.MINOR,
       point,
     );
-    this.destroy();
     this._addPointBtn.disabled = false;
   }
 

@@ -1,7 +1,7 @@
 import PointView from '../view/point';
 import PointEditorView from '../view/point-editor';
 import {render, replace, remove} from '../utils/render';
-import {Mode, UserAction, UpdateType} from '../const';
+import {Mode, State, UserAction, UpdateType} from '../const';
 
 export default class Point {
   constructor(pointContainer, changeData, changeMode) {
@@ -64,6 +64,35 @@ export default class Point {
     }
   }
 
+  setViewState(state) {
+    const resetFormState = () => {
+      this._pointEditorComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    switch (state) {
+      case State.SAVING:
+        this._pointEditorComponent.updateData({
+          isDisabled: true,
+          isSaving: true,
+        });
+        break;
+      case State.DELETING:
+        this._pointEditorComponent.updateData({
+          isDisabled: true,
+          isDeleting: true,
+        });
+        break;
+      case State.ABORTING:
+        this._pointComponent.shake(resetFormState);
+        this._pointEditorComponent.shake(resetFormState);
+        break;
+    }
+  }
+
   _closeFormWithoutSave() {
     this._pointEditorComponent.reset(this._point);
     this._replaceFormToPoint();
@@ -97,7 +126,6 @@ export default class Point {
       UpdateType.MINOR,
       point,
     );
-    this._replaceFormToPoint();
   }
 
   _handleDeleteClick(point) {

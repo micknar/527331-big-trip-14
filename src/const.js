@@ -5,6 +5,9 @@ export const Count = {
   CITIES_IN_ROUTE: 3,
 };
 
+export const ERROR_ANIMATION_TIMEOUT = 600;
+export const ERROR_ANIMATION_STYLE = 'box-shadow: 0px 0px 20px rgba(216, 15, 15, 0.4)';
+
 export const PRICE_MAX = 10000;
 
 export const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'transport', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
@@ -94,6 +97,12 @@ export const Container = {
 export const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
+  ABORTING: 'ABORTING',
+};
+
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
 };
 
 export const BLANK_POINT = {
