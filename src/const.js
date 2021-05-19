@@ -98,14 +98,18 @@ export const Mode = {
 
 export const BLANK_POINT = {
   id: -1,
-  basePrice: '',
+  basePrice: '0',
   dateFrom: new Date(),
   dateTo: new Date(),
   destination: {
     name: POINTS[0],
-    pictures: [],
     description: '',
+    pictures: [{
+      src: '',
+      description: '',
+    }],
   },
+  isFavorite: false,
   offers: [],
   type: POINT_TYPES[0],
 };

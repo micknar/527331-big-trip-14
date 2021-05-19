@@ -1,6 +1,5 @@
 import PointEditorView from '../view/point-editor';
 import {render, remove} from '../utils/render';
-import {generateId} from '../utils/common';
 import {UserAction, UpdateType, RenderPosition} from '../const';
 
 export default class PointNew {
@@ -58,7 +57,7 @@ export default class PointNew {
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      Object.assign({}, point, {id: generateId()}),
+      point,
     );
     this.destroy();
     this._addPointBtn.disabled = false;

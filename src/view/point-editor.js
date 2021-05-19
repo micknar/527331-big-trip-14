@@ -14,22 +14,22 @@ const createDestinationsListTemplate = (id) => {
   </datalist>`;
 };
 
-const createPointTypesListTemplate = (id, checkedType) => {
+const createPointTypesListTemplate = (checkedType) => {
   return `<div class="event__type-list">
     <fieldset class="event__type-group">
       <legend class="visually-hidden">Event type</legend>
   ${POINT_TYPES.map((type) => {
     return `<div class="event__type-item">
-      <input id="event-type-${type}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type"
+      <input id="event-type-${type}" class="event__type-input  visually-hidden" type="radio" name="event-type"
       value="${type}" ${type === checkedType ? 'checked' : ''}>
-      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${id}">${type}</label>
+      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}">${type}</label>
     </div>`;
   }).join('')}
     </fieldset>
   </div>`;
 };
 
-const createOffersTemplate = (id, offers) => {
+const createOffersTemplate = (offers) => {
   if (offers.length > 0) {
     return `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -37,9 +37,9 @@ const createOffersTemplate = (id, offers) => {
       <div class="event__available-offers">
   ${offers.map((offer) => {
     return `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${id}" type="checkbox" name="event-offer-${offer.title}"
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}" type="checkbox" name="event-offer-${offer.title}"
       data-offer-title="${offer.title}" ${offer.isChecked ? 'checked' : ''} >
-      <label class="event__offer-label" for="event-offer-${offer.title}-${id}">
+      <label class="event__offer-label" for="event-offer-${offer.title}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${offer.price}</span>
@@ -96,40 +96,40 @@ const createPointEditorTemplate = (point) => {
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
         <div class="event__type-wrapper">
-          <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
+          <label class="event__type  event__type-btn" for="event-type-toggle">
             <span class="visually-hidden">Choose event type</span>
             <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
           </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
+          <input class="event__type-toggle  visually-hidden" id="event-type-toggle" type="checkbox">
 
           ${createPointTypesListTemplate(id, type)}
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          <label class="event__label  event__type-output" for="event-destination-${id}">
+          <label class="event__label  event__type-output" for="event-destination">
             ${type}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination"
-          value="${he.encode(destination.name)}" list="destination-list-${id}">
+          <input class="event__input  event__input--destination" id="event-destination" type="text" name="event-destination"
+          value="${he.encode(destination.name)}" list="destination-list">
           ${createDestinationsListTemplate(id)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
-          <label class="visually-hidden" for="event-start-time-${id}">From</label>
-          <input class="event__input event__input--time event__input--start" id="event-start-time-${id}" type="text" name="event-start-time"
+          <label class="visually-hidden" for="event-start-time">From</label>
+          <input class="event__input event__input--time event__input--start" id="event-start-time" type="text" name="event-start-time"
           value="${dateToFormat(dateFrom, DateFormat.full)}">
           &mdash;
-          <label class="visually-hidden" for="event-end-time-${id}">To</label>
-          <input class="event__input event__input--time event__input--end" id="event-end-time-${id}" type="text" name="event-end-time"
+          <label class="visually-hidden" for="event-end-time">To</label>
+          <input class="event__input event__input--time event__input--end" id="event-end-time" type="text" name="event-end-time"
           value="${dateToFormat(dateTo, DateFormat.full)}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
-          <label class="event__label" for="event-price-${id}">
+          <label class="event__label" for="event-price">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${id}" type="number" min="0" name="event-price" 
+          <input class="event__input  event__input--price" id="event-price" type="number" min="0" name="event-price" 
           value="${basePrice}">
         </div>
 
