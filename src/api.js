@@ -13,9 +13,11 @@ const SuccessHTTPStatusRange = {
 };
 
 export default class Api {
-  constructor(endPoint, authorization) {
+  constructor(endPoint, authorization, destinationsData, offersData) {
     this._endPoint = endPoint;
     this._authorization = authorization;
+    this._destinationsData = destinationsData;
+    this._offersData = offersData;
   }
 
   getPoints() {
@@ -26,7 +28,7 @@ export default class Api {
       .then((points) => points.map(PointsModel.adaptToClient));
   }
 
-  getDestination() {
+  getDestinations() {
     return this._load({
       url: 'destinations',
     })
@@ -38,6 +40,22 @@ export default class Api {
       url: 'offers',
     })
       .then(Api.toJSON);
+  }
+
+  getData() {
+    return Promise.all([
+      this.getPoints(),
+      this.getDestinations(),
+      this.getOffers(),
+    ])
+      .then((data) => {
+        const [points, destinations, offers] = data;
+
+        this._destinationsData.setDestinations(destinations);
+        this._offersData.setOffers(offers);
+
+        return points;
+      });
   }
 
   updatePoint(point) {

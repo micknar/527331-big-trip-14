@@ -110,17 +110,10 @@ export const BLANK_POINT = {
   basePrice: '0',
   dateFrom: new Date(),
   dateTo: new Date(),
-  destination: {
-    name: POINTS[0],
-    description: '',
-    pictures: [{
-      src: '',
-      description: '',
-    }],
-  },
+  destination: '',
   isFavorite: false,
   offers: [],
-  type: POINT_TYPES[0],
+  type: 'taxi',
 };
 
 export const UpdateType = {

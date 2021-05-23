@@ -10,10 +10,12 @@ import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../ut
 import {SortType, UserAction, UpdateType, FilterType, RenderPosition, State as PointPresenterViewState} from '../const';
 
 export default class Trip {
-  constructor(tripContainer, pointsModel, filterModel, api) {
+  constructor(tripContainer, pointsModel, destinations, offers, filterModel, api) {
     this._tripContainer = tripContainer;
     this._filterModel = filterModel;
     this._pointsModel = pointsModel;
+    this._destinations = destinations;
+    this._offers = offers;
     this._api = api;
     this._pointPresenter = {};
 
@@ -42,7 +44,7 @@ export default class Trip {
     this._filterModel.addObserver(this._handleModelEvent);
     this._pointsModel.addObserver(this._handleModelEvent);
 
-    this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._handleViewAction);
+    this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._destinations, this._offers, this._handleViewAction);
   }
 
   createPoint() {
@@ -120,7 +122,7 @@ export default class Trip {
   }
 
   _renderPoint(point) {
-    const pointPresenter = new PointPresenter(this._pointsListComponent.getElement(), this._handleViewAction, this._handleModeChange);
+    const pointPresenter = new PointPresenter(this._pointsListComponent.getElement(), this._destinations, this._offers, this._handleViewAction, this._handleModeChange);
 
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;

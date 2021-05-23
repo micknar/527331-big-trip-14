@@ -2,26 +2,27 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import SmartView from './smart';
-import {POINTS, POINT_TYPES, DateFormat, DESCRIPTIONS, Count, BLANK_POINT} from '../const';
-import {dateToFormat, getRandomArrayItems, getRandomInteger} from '../utils/common';
-import {generatePictures, generateOffers} from '../mocks/points';
+import {DateFormat, Count, BLANK_POINT} from '../const';
+import {dateToFormat, getRandomInteger} from '../utils/common';
+import {generateOffers} from '../mocks/points';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
 const setDisabled = (isDisabled) => isDisabled ? 'disabled' : '';
 const getDeleteBtnText = (isDeleting) => isDeleting ? 'Deleting...' : 'Delete';
 
-const createDestinationsListTemplate = (id) => {
-  return `<datalist id="destination-list-${id}">
-    ${POINTS.map((point) => `<option value="${point}"></option>`).join('')}
+const createDestinationsListTemplate = (destinations) => {
+  return `<datalist id="destination-list">
+    ${destinations.map((destination) => `<option value="${destination.name}"></option>`).join('')}
   </datalist>`;
 };
 
-const createPointTypesListTemplate = (checkedType, isDisabled) => {
+const createPointTypesListTemplate = (checkedType, offers, isDisabled) => {
   return `<div class="event__type-list">
     <fieldset class="event__type-group">
       <legend class="visually-hidden">Event type</legend>
-  ${POINT_TYPES.map((type) => {
+  ${offers.map((offer) => {
+    const {type} = offer;
     return `<div class="event__type-item">
       <input id="event-type-${type}" class="event__type-input  visually-hidden" type="radio" name="event-type"
       value="${type}" ${type === checkedType ? 'checked' : ''} ${setDisabled(isDisabled)}>
@@ -81,7 +82,7 @@ const createPicturesTemplate = (pictures) => {
 const createDestinationTemplate = (destination) => {
   const {description, pictures} = destination;
 
-  if (description || pictures.length !== 0) {
+  if (description || pictures) {
     return `<section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
       ${createDescriptionTemplate(description)}
@@ -92,7 +93,7 @@ const createDestinationTemplate = (destination) => {
   }
 };
 
-const createPointEditorTemplate = (point, isDisabled, isSaving, isDeleting) => {
+const createPointEditorTemplate = (destinations, allOffers, point, isDisabled, isSaving, isDeleting) => {
   const {id, type, dateTo, dateFrom, basePrice, offers, destination} = point;
 
   return `<li class="trip-events__item">
@@ -105,7 +106,7 @@ const createPointEditorTemplate = (point, isDisabled, isSaving, isDeleting) => {
           </label>
           <input class="event__type-toggle  visually-hidden" id="event-type-toggle" type="checkbox" ${setDisabled(isDisabled)}>
 
-          ${createPointTypesListTemplate(id, type)}
+          ${createPointTypesListTemplate(type, allOffers, isDisabled)}
         </div>
 
         <div class="event__field-group  event__field-group--destination">
@@ -113,8 +114,8 @@ const createPointEditorTemplate = (point, isDisabled, isSaving, isDeleting) => {
             ${type}
           </label>
           <input class="event__input  event__input--destination" id="event-destination" type="text" name="event-destination"
-          value="${he.encode(destination.name)}" list="destination-list" ${setDisabled(isDisabled)}>
-          ${createDestinationsListTemplate(id)}
+          value="${destination !== '' ? he.encode(destination.name) : ''}" list="destination-list" ${setDisabled(isDisabled)}>
+          ${createDestinationsListTemplate(destinations)}
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -144,7 +145,7 @@ ${id === -1
 }
       </header>
       <section class="event__details">
-        ${createOffersTemplate(id, offers)}
+        ${createOffersTemplate(offers, isDisabled)}
         ${createDestinationTemplate(destination)}
       </section>
     </form>
@@ -152,8 +153,10 @@ ${id === -1
 };
 
 export default class PointEditor extends SmartView {
-  constructor(point = BLANK_POINT) {
+  constructor(destinations, offers, point = BLANK_POINT) {
     super();
+    this._destinations = destinations;
+    this._offers = offers;
     this._data = PointEditor.parsePointToData(point);
     this._dateFromPicker = null;
     this._dateToPicker = null;
@@ -198,7 +201,7 @@ export default class PointEditor extends SmartView {
   }
 
   getTemplate() {
-    return createPointEditorTemplate(this._data);
+    return createPointEditorTemplate(this._destinations.getDestinations(), this._offers.getOffers(), this._data);
   }
 
   reset(point) {
@@ -306,12 +309,20 @@ export default class PointEditor extends SmartView {
   }
 
   _destinationChangeHandler(evt) {
-    evt.preventDefault();
+    const allDestinations = this._destinations.getDestinations();
+    const isExist = allDestinations.find((item) => item.name === evt.target.value);
+
+    if (!isExist) {
+      return evt.target.setCustomValidity('This destination was not found.');
+    }
+
+    const destination = allDestinations.filter((item) => item.name === evt.target.value)[0];
+
     this.updateData({
       destination: {
-        description: getRandomArrayItems(DESCRIPTIONS),
-        name: evt.target.value,
-        pictures: generatePictures(getRandomInteger(Count.PICTURES)),
+        description: destination.description,
+        name: destination.name,
+        pictures: destination.pictures,
       },
     });
   }

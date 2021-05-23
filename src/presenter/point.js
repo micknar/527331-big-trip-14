@@ -4,8 +4,10 @@ import {render, replace, remove} from '../utils/render';
 import {Mode, State, UserAction, UpdateType} from '../const';
 
 export default class Point {
-  constructor(pointContainer, changeData, changeMode) {
+  constructor(pointContainer, destinations, offers, changeData, changeMode) {
     this._pointContainer = pointContainer;
+    this._destinations = destinations;
+    this._offers = offers;
     this._changeData = changeData;
     this._changeMode = changeMode;
 
@@ -28,7 +30,7 @@ export default class Point {
     const prevPointEditorComponent = this._pointEditorComponent;
 
     this._pointComponent = new PointView(point);
-    this._pointEditorComponent = new PointEditorView(point);
+    this._pointEditorComponent = new PointEditorView(this._destinations, this._offers, point);
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointEditorComponent.setFormSubmitHandler(this._handleFormSubmit);
