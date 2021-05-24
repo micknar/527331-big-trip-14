@@ -345,7 +345,7 @@ export default class PointEditor extends SmartView {
 
     this.updateData({
       offers: newOffers,
-    });
+    }, true);
   }
 
   _priceChangeHandler(evt) {
