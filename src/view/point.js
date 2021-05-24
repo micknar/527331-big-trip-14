@@ -3,17 +3,9 @@ import {dateToFormat, getPointDuration, getPointPrice} from '../utils/common';
 import {DateFormat} from '../const';
 
 const createOffersTemplate = (offers) => {
-  const checkedOffers = [];
-
-  offers.forEach((offer) => {
-    if (offer.isChecked) {
-      checkedOffers.push(offer);
-    }
-  });
-
-  if (checkedOffers.length > 0) {
+  if (offers.length > 0) {
     return `<ul class="event__selected-offers">
-      ${checkedOffers.map((offer) => {
+      ${offers.map((offer) => {
     return `<li class="event__offer">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;

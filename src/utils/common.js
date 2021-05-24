@@ -160,6 +160,12 @@ export const getPointPrice = (basePrice, offers) => {
   return basePrice + offersPrice;
 };
 
+export const isCheckedOffer = (availableOffer, checkedOffers) => {
+  if (availableOffer && checkedOffers) {
+    return checkedOffers.some((item) =>  [item.title].indexOf(availableOffer.title) !== -1);
+  }
+};
+
 export const sortByStartDate = (points) => {
   return points.sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
 };

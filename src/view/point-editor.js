@@ -2,9 +2,8 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import SmartView from './smart';
-import {DateFormat, Count, BLANK_POINT} from '../const';
-import {dateToFormat, getRandomInteger} from '../utils/common';
-import {generateOffers} from '../mocks/points';
+import {DateFormat, BLANK_POINT} from '../const';
+import {dateToFormat, isCheckedOffer} from '../utils/common';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -33,16 +32,18 @@ const createPointTypesListTemplate = (checkedType, offers, isDisabled) => {
   </div>`;
 };
 
-const createOffersTemplate = (offers, isDisabled) => {
-  if (offers.length > 0) {
+const createOffersTemplate = (type, allOffers, offers, isDisabled) => {
+  const availableOffers = allOffers.filter((item) => item.type === type)[0].offers;
+
+  if (availableOffers.length > 0) {
     return `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
-  ${offers.map((offer) => {
+  ${availableOffers.map((offer) => {
     return `<div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}" type="checkbox" name="event-offer-${offer.title}"
-      data-offer-title="${offer.title}" ${offer.isChecked ? 'checked' : ''} ${setDisabled(isDisabled)} >
+      data-offer-title="${offer.title}" ${isCheckedOffer(offer, offers) ? 'checked' : ''} ${setDisabled(isDisabled)} >
       <label class="event__offer-label" for="event-offer-${offer.title}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
@@ -145,7 +146,7 @@ ${id === -1
 }
       </header>
       <section class="event__details">
-        ${createOffersTemplate(offers, isDisabled)}
+        ${createOffersTemplate(type, allOffers, offers, isDisabled)}
         ${createDestinationTemplate(destination)}
       </section>
     </form>
@@ -303,7 +304,7 @@ export default class PointEditor extends SmartView {
   _pointTypeChangeHandler(evt) {
     evt.preventDefault();
     this.updateData({
-      offers: generateOffers(getRandomInteger(Count.OFFER)),
+      offers: [],
       type: evt.target.value,
     });
   }
@@ -328,14 +329,22 @@ export default class PointEditor extends SmartView {
   }
 
   _offerToggleHandler(evt) {
-    this.updateData({
-      offers: this._data.offers.map((offer) => {
-        if (offer.title === evt.target.dataset.offerTitle) {
-          offer.isChecked = !offer.isChecked;
-        }
+    if (evt.target.tagName !== 'INPUT') {
+      return;
+    }
 
-        return offer;
-      }),
+    const checkedOfferTitle = evt.target.dataset.offerTitle;
+    const offers = this._data.offers;
+
+    const availableOffers = this._offers.getOffers().filter((item) => item.type === this._data.type)[0].offers;
+    const checkedOffer = availableOffers.find((item) => item.title === checkedOfferTitle);
+
+    const newOffers = offers.find((item) => item.title === checkedOfferTitle)
+      ? offers.filter((item) => item.title !== checkedOfferTitle)
+      : [...offers.slice(), checkedOffer];
+
+    this.updateData({
+      offers: newOffers,
     });
   }
 
