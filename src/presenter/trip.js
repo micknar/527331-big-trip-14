@@ -178,7 +178,7 @@ export default class Trip {
           });
         break;
       case UserAction.ADD_POINT:
-        this._pointNewPresenter[update.id].setSaving();
+        this._pointNewPresenter.setSaving();
         this._api.addPoint(update)
           .then((response) => {
             this._pointsModel.addPoint(updateType, response);

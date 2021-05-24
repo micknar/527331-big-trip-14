@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import SmartView from './smart';
-import {DateFormat, BLANK_POINT} from '../const';
+import {DateFormat} from '../const';
 import {dateToFormat, isCheckedOffer} from '../utils/common';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -154,7 +154,7 @@ ${id === -1
 };
 
 export default class PointEditor extends SmartView {
-  constructor(destinations, offers, point = BLANK_POINT) {
+  constructor(destinations, offers, point) {
     super();
     this._destinations = destinations;
     this._offers = offers;

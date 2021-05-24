@@ -28,18 +28,6 @@ export const getPointDuration = (dateFrom, dateTo) => {
   return getTimeDiff(dateToDefault.diff(dateFromDefault));
 };
 
-export const getPointDates = () => {
-  const dateFrom = getRandomDate();
-  const dateTo = getRandomDate(dateFrom);
-
-  const date = {
-    dateFrom,
-    dateTo,
-  };
-
-  return date;
-};
-
 export const areEqualDates = (dateA, dateB) => dayjs(dateA) === dayjs(dateB);
 
 export const isFutureDate = (currentDate, dateFrom) => {

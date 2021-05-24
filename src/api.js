@@ -55,6 +55,10 @@ export default class Api {
         this._offersData.setOffers(offers);
 
         return points;
+      })
+      .catch(() => {
+        this._destinationsData.setDestinations([]);
+        this._offersData.setOffers([]);
       });
   }
 

@@ -3,17 +3,6 @@ export const DEFAULT_POINT_TYPE = 'taxi';
 export const ERROR_ANIMATION_TIMEOUT = 600;
 export const ERROR_ANIMATION_STYLE = 'box-shadow: 0px 0px 20px rgba(216, 15, 15, 0.4)';
 
-export const BLANK_POINT = {
-  id: -1,
-  basePrice: '0',
-  dateFrom: new Date(),
-  dateTo: new Date(),
-  destination: '',
-  isFavorite: false,
-  offers: [],
-  type: DEFAULT_POINT_TYPE,
-};
-
 export const DateFormat = {
   time: 'HH:mm',
   day: 'DD',

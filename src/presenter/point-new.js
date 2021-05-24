@@ -1,6 +1,6 @@
 import PointEditorView from '../view/point-editor';
 import {render, remove} from '../utils/render';
-import {UserAction, UpdateType, RenderPosition} from '../const';
+import {UserAction, UpdateType, RenderPosition, DEFAULT_POINT_TYPE} from '../const';
 
 export default class PointNew {
   constructor(pointsListContainer, destinations, offers, changeData) {
@@ -16,6 +16,17 @@ export default class PointNew {
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
 
     this._addPointBtn = document.querySelector('.trip-main__event-add-btn');
+
+    this._blankPoint = {
+      id: -1,
+      basePrice: '0',
+      dateFrom: new Date(),
+      dateTo: new Date(),
+      destination: '',
+      isFavorite: false,
+      offers: [],
+      type: DEFAULT_POINT_TYPE,
+    };
   }
 
   init() {
@@ -25,7 +36,7 @@ export default class PointNew {
       return;
     }
 
-    this._pointEditorComponent = new PointEditorView(this._destinations, this._offers);
+    this._pointEditorComponent = new PointEditorView(this._destinations, this._offers, this._blankPoint);
 
     this._pointEditorComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditorComponent.setDeleteClickHandler(this._handleDeleteClick);
