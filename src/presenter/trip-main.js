@@ -28,6 +28,11 @@ export default class TripMain {
         render(this._tripMainContainer, this._tripMainComponent, RenderPosition.AFTERBEGIN);
       }
     }
+
+    if (this._points.length <= 0) {
+      remove(prevComponent);
+      this._tripMainComponent = null;
+    }
   }
 
   _handleModelEvent() {
