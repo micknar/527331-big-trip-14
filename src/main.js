@@ -10,7 +10,7 @@ import DestinationsData from './data/destinations';
 import OffersData from './data/offers';
 import Api from './api';
 
-const AUTHORIZATION = 'Basic adgdcghcasd';
+const AUTHORIZATION = 'Basic adgdcghgf6';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const addPointBtn = document.querySelector('.trip-main__event-add-btn');

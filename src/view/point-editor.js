@@ -94,8 +94,8 @@ const createDestinationTemplate = (destination) => {
   }
 };
 
-const createPointEditorTemplate = (destinations, allOffers, point, isDisabled, isSaving, isDeleting) => {
-  const {id, type, dateTo, dateFrom, basePrice, offers, destination} = point;
+const createPointEditorTemplate = (destinations, allOffers, point) => {
+  const {id, type, dateTo, dateFrom, basePrice, offers, destination, isDisabled, isSaving, isDeleting} = point;
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
