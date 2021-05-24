@@ -1,38 +1,5 @@
 import dayjs from 'dayjs';
-import {TimeGap, Millisecond, FilterType, DateFormat, Count} from '../const';
-
-export const getRandomInteger = (max, min = 0) => Math.floor(Math.random() * (max + 1 - min)) + min;
-
-export const getRandomBoolean = () => Math.random() > 0.5;
-
-export const getRandomArrayItem = (array) => array[getRandomArrayIndex(array)];
-
-export const getRandomArrayIndex = (array) => getRandomInteger(array.length - 1);
-
-export const getRandomArrayItems = (array) => {
-  const tempArray = array.slice();
-  const count = getRandomArrayIndex(array);
-  const randomItems = [];
-
-  for (let i = 0; i < count; i++) {
-    const randomIndex = getRandomArrayIndex(tempArray);
-    const itemOfSet = tempArray[randomIndex];
-
-    randomItems.push(itemOfSet);
-    tempArray.splice(randomIndex, 1);
-  }
-
-  return randomItems.length === 0 ? [array[0]] : randomItems;
-};
-
-export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
-
-export const getRandomDate = (dateFrom) => {
-  return dayjs(dateFrom)
-    .add(getRandomInteger(TimeGap.DAYS, 0), 'day')
-    .add(getRandomInteger(TimeGap.HOURS, 0), 'hour')
-    .add(getRandomInteger(TimeGap.MINUTES, 0), 'minute');
-};
+import {Millisecond, FilterType, DateFormat, CITIES_IN_ROUTE_COUNT} from '../const';
 
 export const dateToFormat = (date, format) => {
   return dayjs(date).format(format).toUpperCase();
@@ -106,7 +73,7 @@ export const getRoute = (points) => {
 
   let route = Array.from(cities);
 
-  if (route.length <= Count.CITIES_IN_ROUTE) {
+  if (route.length <= CITIES_IN_ROUTE_COUNT) {
     route = route
       .map((city) => `${city}`)
       .join(' &mdash; ');
@@ -151,11 +118,7 @@ export const getTotalPrice = (item, price) => {
 export const getPointPrice = (basePrice, offers) => {
   let offersPrice = 0;
 
-  offers.forEach((offer) => {
-    if (offer.isChecked) {
-      offersPrice += offer.price;
-    }
-  });
+  offers.forEach((offer) => offersPrice += offer.price);
 
   return basePrice + offersPrice;
 };
