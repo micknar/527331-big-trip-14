@@ -1,11 +1,12 @@
 import PointEditorView from '../view/point-editor';
 import {render, remove} from '../utils/render';
-import {generateId} from '../utils/common';
-import {UserAction, UpdateType, RenderPosition} from '../const';
+import {UserAction, UpdateType, RenderPosition, DEFAULT_POINT_TYPE} from '../const';
 
 export default class PointNew {
-  constructor(pointsListContainer, changeData) {
+  constructor(pointsListContainer, destinations, offers, changeData) {
     this._pointsListContainer = pointsListContainer;
+    this._destinations = destinations;
+    this._offers = offers;
     this._changeData = changeData;
 
     this._pointEditorComponent = null;
@@ -15,6 +16,17 @@ export default class PointNew {
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
 
     this._addPointBtn = document.querySelector('.trip-main__event-add-btn');
+
+    this._blankPoint = {
+      id: -1,
+      basePrice: '0',
+      dateFrom: new Date(),
+      dateTo: new Date(),
+      destination: '',
+      isFavorite: false,
+      offers: [],
+      type: DEFAULT_POINT_TYPE,
+    };
   }
 
   init() {
@@ -24,7 +36,7 @@ export default class PointNew {
       return;
     }
 
-    this._pointEditorComponent = new PointEditorView();
+    this._pointEditorComponent = new PointEditorView(this._destinations, this._offers, this._blankPoint);
 
     this._pointEditorComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditorComponent.setDeleteClickHandler(this._handleDeleteClick);
@@ -47,6 +59,25 @@ export default class PointNew {
     document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
+  setSaving() {
+    this._pointEditorComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this._pointEditorComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this._pointEditorComponent.shake(resetFormState);
+  }
+
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       this.destroy();
@@ -58,9 +89,8 @@ export default class PointNew {
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      Object.assign({}, point, {id: generateId()}),
+      point,
     );
-    this.destroy();
     this._addPointBtn.disabled = false;
   }
 

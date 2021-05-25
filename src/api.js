@@ -13,9 +13,11 @@ const SuccessHTTPStatusRange = {
 };
 
 export default class Api {
-  constructor(endPoint, authorization) {
+  constructor(endPoint, authorization, destinationsData, offersData) {
     this._endPoint = endPoint;
     this._authorization = authorization;
+    this._destinationsData = destinationsData;
+    this._offersData = offersData;
   }
 
   getPoints() {
@@ -24,6 +26,40 @@ export default class Api {
     })
       .then(Api.toJSON)
       .then((points) => points.map(PointsModel.adaptToClient));
+  }
+
+  getDestinations() {
+    return this._load({
+      url: 'destinations',
+    })
+      .then(Api.toJSON);
+  }
+
+  getOffers() {
+    return this._load({
+      url: 'offers',
+    })
+      .then(Api.toJSON);
+  }
+
+  getData() {
+    return Promise.all([
+      this.getPoints(),
+      this.getDestinations(),
+      this.getOffers(),
+    ])
+      .then((data) => {
+        const [points, destinations, offers] = data;
+
+        this._destinationsData.setDestinations(destinations);
+        this._offersData.setOffers(offers);
+
+        return points;
+      })
+      .catch(() => {
+        this._destinationsData.setDestinations([]);
+        this._offersData.setOffers([]);
+      });
   }
 
   updatePoint(point) {
@@ -35,6 +71,24 @@ export default class Api {
     })
       .then(Api.toJSON)
       .then(PointsModel.adaptToClient);
+  }
+
+  addPoint(point) {
+    return this._load({
+      url: 'points',
+      method: Method.POST,
+      body: JSON.stringify(PointsModel.adaptToServer(point)),
+      headers: new Headers({'Content-Type': 'application/json'}),
+    })
+      .then(Api.toJSON)
+      .then(PointsModel.adaptToClient);
+  }
+
+  deletePoint(point) {
+    return this._load({
+      url: `points/${point.id}`,
+      method: Method.DELETE,
+    });
   }
 
   _load({
