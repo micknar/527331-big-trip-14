@@ -1,6 +1,7 @@
 import PointView from '../view/point';
 import PointEditorView from '../view/point-editor';
 import {render, replace, remove} from '../utils/render';
+import {isEscKey} from '../utils/common';
 import {Mode, State, UserAction, UpdateType} from '../const';
 
 export default class Point {
@@ -116,7 +117,7 @@ export default class Point {
   }
 
   _escKeyDownHandler(evt) {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
+    if (isEscKey(evt)) {
       evt.preventDefault();
       this._closeFormWithoutSave();
     }

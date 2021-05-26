@@ -1,5 +1,6 @@
 import PointEditorView from '../view/point-editor';
 import {render, remove} from '../utils/render';
+import {isEscKey} from '../utils/common';
 import {UserAction, UpdateType, RenderPosition, DEFAULT_POINT_TYPE} from '../const';
 
 export default class PointNew {
@@ -79,7 +80,7 @@ export default class PointNew {
   }
 
   _escKeyDownHandler(evt) {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
+    if (isEscKey(evt)) {
       this.destroy();
       this._addPointBtn.disabled = false;
     }

@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import {Millisecond, FilterType, DateFormat, CITIES_IN_ROUTE_COUNT} from '../const';
 
+export const isEscKey = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
 export const dateToFormat = (date, format) => {
   return dayjs(date).format(format).toUpperCase();
 };
