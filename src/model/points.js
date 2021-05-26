@@ -1,4 +1,5 @@
 import Observer from '../utils/observer';
+import {getTimestamp} from '../utils/common';
 
 export default class Points extends Observer {
   constructor() {
@@ -66,6 +67,7 @@ export default class Points extends Observer {
         dateFrom: point.date_from !== null ? new Date(point.date_from) : point.date_from,
         dateTo: point.date_to !== null ? new Date(point.date_to) : point.date_to,
         isFavorite: point.is_favorite,
+        durationTimestamp: getTimestamp(point.date_from, point.date_to),
       },
     );
 
@@ -94,6 +96,7 @@ export default class Points extends Observer {
     delete adaptedPoint.dateFrom;
     delete adaptedPoint.dateTo;
     delete adaptedPoint.isFavorite;
+    delete adaptedPoint.durationTimestamp;
 
     return adaptedPoint;
   }

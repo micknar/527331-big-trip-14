@@ -7,7 +7,7 @@ export const dateToFormat = (date, format) => {
   return dayjs(date).format(format).toUpperCase();
 };
 
-const getTimeDiff = (diff) => {
+export const getFormattedDuration = (diff) => {
   let result;
 
   if (diff >= Millisecond.IN_DAY) {
@@ -23,11 +23,15 @@ const getTimeDiff = (diff) => {
   return result;
 };
 
-export const getPointDuration = (dateFrom, dateTo) => {
+export const getTimestamp = (dateFrom, dateTo) => {
   const dateToDefault = dayjs(dateTo);
   const dateFromDefault = dayjs(dateFrom);
 
-  return getTimeDiff(dateToDefault.diff(dateFromDefault));
+  return dateToDefault.diff(dateFromDefault);
+};
+
+export const getPointDuration = (dateFrom, dateTo) => {
+  return getFormattedDuration(getTimestamp(dateFrom, dateTo));
 };
 
 export const areEqualDates = (dateA, dateB) => dayjs(dateA) === dayjs(dateB);

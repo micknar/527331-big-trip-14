@@ -1,6 +1,6 @@
 import MainNavView from './view/main-nav';
 import StatsView from './view/stats';
-import {render} from './utils/render';
+import {render, remove} from './utils/render';
 import {Container, UpdateType, NavItem, FilterType, RenderPosition} from './const';
 import TripPresenter from './presenter/trip';
 import TripMainPresenter from './presenter/trip-main';
@@ -27,6 +27,7 @@ const tripPresenter = new TripPresenter(Container.EVENTS, pointsModel, destinati
 const filterPresenter = new FilterPresenter(Container.FILTERS, filterModel, pointsModel);
 const tripMainPresenter = new TripMainPresenter(Container.MAIN, pointsModel);
 const mainNavComponent = new MainNavView();
+let statsViewComponent = null;
 
 addPointBtn.addEventListener('click', () => {
   tripPresenter.createPoint();
@@ -40,6 +41,7 @@ const handleMainNavClick = (navItem) => {
       mainNavComponent.setNavItem(NavItem.TABLE);
       tripPresenter.init();
       Container.EVENTS.classList.remove('trip-events--hidden');
+      remove(statsViewComponent);
       filterPresenter.removeDisabled();
       filterModel.set(UpdateType.MAJOR, FilterType.EVERYTHING);
       break;
@@ -49,7 +51,9 @@ const handleMainNavClick = (navItem) => {
       tripPresenter.destroy();
       addPointBtn.disabled = true;
       filterPresenter.setDisabled();
-      render(Container.PAGE_MAIN, new StatsView(), RenderPosition.BEFOREEND);
+
+      statsViewComponent = new StatsView(pointsModel.get());
+      render(Container.PAGE_MAIN, statsViewComponent, RenderPosition.BEFOREEND);
       break;
   }
 };
@@ -64,6 +68,8 @@ api
   .then((points) => {
     pointsModel.set(UpdateType.INIT, points);
     tripMainPresenter.init();
+    //console.log(points[0].durationTimestamp)
+    //render(Container.PAGE_MAIN, new StatsView(pointsModel.get()), RenderPosition.BEFOREEND);
   })
   .catch(() => {
     pointsModel.set(UpdateType.INIT, []);

@@ -1,4 +1,50 @@
-import AbstractView from './abstract';
+import Chart from 'chart.js';
+import SmartView from './smart';
+import {getFormattedDuration} from '../utils/common';
+import {
+  getChartLabels,
+  getUniquePointTypes,
+  getPointsPrice,
+  getPointsCountByType,
+  getPointsDuration,
+  getChartSettings
+} from '../utils/stats';
+
+const renderMoneyChart = (ctx, data) => {
+  const sortedData = data.sort((a, b) => b.price - a.price);
+  const chartData = sortedData.map((item) => item.price);
+
+  return new Chart(ctx, getChartSettings(
+    getChartLabels(sortedData),
+    chartData,
+    'MONEY',
+    (val) => `€ ${val}`,
+  ));
+};
+
+const renderCountByTypeChart = (ctx, data) => {
+  const sortedData = data.sort((a, b) => b.count - a.count);
+  const chartData = sortedData.map((item) => item.count);
+
+  return new Chart(ctx, getChartSettings(
+    getChartLabels(sortedData),
+    chartData,
+    'TYPE',
+    (val) => `${val}x`,
+  ));
+};
+
+const renderTimeSpendChart = (ctx, data) => {
+  const sortedData = data.sort((a, b) => b.durationTimestamp - a.durationTimestamp);
+  const chartData = sortedData.map((item) => item.durationTimestamp);
+
+  return new Chart(ctx, getChartSettings(
+    getChartLabels(sortedData),
+    chartData,
+    'TIME-SPEND',
+    (val) => getFormattedDuration(val),
+  ));
+};
 
 const createStatsTemplate = () => {
   return `<section class="statistics">
@@ -18,8 +64,48 @@ const createStatsTemplate = () => {
   </section>`;
 };
 
-export default class Stats extends AbstractView {
+export default class Stats extends SmartView {
+  constructor(points) {
+    super();
+    this._points = points;
+
+    this._moneyChart = null;
+    this._countByTypeChart = null;
+    this._timeSpendChart = null;
+
+    this._setCharts();
+  }
+
   getTemplate() {
     return createStatsTemplate();
+  }
+
+  _setCharts() {
+    if (this._moneyChart !== null || this._countByTypeChart !== null || this._timeSpendChart !== null) {
+      this._moneyChart = null;
+      this._countByTypeChart = null;
+      this._timeSpendChart = null;
+    }
+
+    const moneyCtx = this.getElement().querySelector('.statistics__chart--money');
+    const countByTypeCtx = this.getElement().querySelector('.statistics__chart--transport');
+    const timeSpendCtx = this.getElement().querySelector('.statistics__chart--time');
+
+    const uniquePointTypes = getUniquePointTypes(this._points);
+
+    const price = getPointsPrice(this._points, uniquePointTypes);
+    const count = getPointsCountByType(this._points, uniquePointTypes);
+    const durationTimestamp = getPointsDuration(this._points, uniquePointTypes);
+
+    const data = uniquePointTypes.map((type, index) => ({
+      type,
+      price: price[index],
+      count: count[index],
+      durationTimestamp: durationTimestamp[index],
+    }));
+
+    this._moneyChart = renderMoneyChart(moneyCtx, data);
+    this._countByTypeChart = renderCountByTypeChart(countByTypeCtx, data);
+    this._timeSpendChart = renderTimeSpendChart (timeSpendCtx, data);
   }
 }
