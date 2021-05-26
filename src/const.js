@@ -3,6 +3,11 @@ export const DEFAULT_POINT_TYPE = 'taxi';
 export const ERROR_ANIMATION_TIMEOUT = 600;
 export const ERROR_ANIMATION_STYLE = 'box-shadow: 0px 0px 20px rgba(216, 15, 15, 0.4)';
 
+export const KeyCode = {
+  ESCAPE: 'Escape',
+  ESC: 'Esc',
+};
+
 export const DateFormat = {
   time: 'HH:mm',
   day: 'DD',
@@ -75,4 +80,37 @@ export const UpdateType = {
 export const NavItem = {
   TABLE: 'TABLE',
   STATS: 'STATS',
+};
+
+export const DatepickerSettings = {
+  enableTime: true,
+  'time_24hr': true,
+  dateFormat: 'd/m/y H:i',
+};
+
+export const ChartSettings = {
+  ALIGN: 'start',
+  ANCHOR: {
+    START: 'start',
+    END: 'end',
+  },
+  BAR_THICKNESS: 44,
+  COLOR: {
+    WHITE: '#ffffff',
+    BLACK: '#000000',
+  },
+  FONT_SIZE: {
+    DATA_LABELS: 13,
+    TITLE: 23,
+    TICKS: 13,
+  },
+  MIN_BAR_LENGTH: 50,
+  TEXT: {
+    MONEY: 'MONEY',
+    TYPE: 'TYPE',
+    TIME_SPEND: 'TIME-SPEND',
+  },
+  TICKS_PADDING: 5,
+  TITLE_POSITION: 'left',
+  TYPE: 'horizontalBar',
 };

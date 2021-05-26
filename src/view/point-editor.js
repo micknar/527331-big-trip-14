@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import SmartView from './smart';
-import {DateFormat} from '../const';
+import {DateFormat, DatepickerSettings} from '../const';
 import {dateToFormat, isCheckedOffer} from '../utils/common';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -244,25 +244,27 @@ export default class PointEditor extends SmartView {
 
     this._dateFromPicker = flatpickr(
       this.getElement().querySelector('.event__input--start'),
-      {
-        enableTime: true,
-        time_24hr: true,
-        dateFormat: 'd/m/y H:i',
-        defaultDate: dayjs(this._data.dateFrom).toDate(),
-        onChange: this._dateFromChangeHandler,
-      },
+      Object.assign(
+        {},
+        DatepickerSettings,
+        {
+          defaultDate: dayjs(this._data.dateFrom).toDate(),
+          onChange: this._dateFromChangeHandler,
+        },
+      ),
     );
 
     this._dateToPicker = flatpickr(
       this.getElement().querySelector('.event__input--end'),
-      {
-        enableTime: true,
-        time_24hr: true,
-        dateFormat: 'd/m/y H:i',
-        minDate: dayjs(this._data.dateFrom).toDate(),
-        defaultDate: dayjs(this._data.dateTo).toDate(),
-        onChange: this._dateToChangeHandler,
-      },
+      Object.assign(
+        {},
+        DatepickerSettings,
+        {
+          minDate: dayjs(this._data.dateFrom).toDate(),
+          defaultDate: dayjs(this._data.dateTo).toDate(),
+          onChange: this._dateToChangeHandler,
+        },
+      ),
     );
   }
 

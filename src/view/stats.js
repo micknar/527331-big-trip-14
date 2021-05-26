@@ -1,5 +1,6 @@
 import Chart from 'chart.js';
 import SmartView from './smart';
+import {ChartSettings} from '../const';
 import {getFormattedDuration} from '../utils/common';
 import {
   getChartLabels,
@@ -17,7 +18,7 @@ const renderMoneyChart = (ctx, data) => {
   return new Chart(ctx, getChartSettings(
     getChartLabels(sortedData),
     chartData,
-    'MONEY',
+    ChartSettings.TEXT.MONEY,
     (val) => `€ ${val}`,
   ));
 };
@@ -29,7 +30,7 @@ const renderCountByTypeChart = (ctx, data) => {
   return new Chart(ctx, getChartSettings(
     getChartLabels(sortedData),
     chartData,
-    'TYPE',
+    ChartSettings.TEXT.TYPE,
     (val) => `${val}x`,
   ));
 };
@@ -41,7 +42,7 @@ const renderTimeSpendChart = (ctx, data) => {
   return new Chart(ctx, getChartSettings(
     getChartLabels(sortedData),
     chartData,
-    'TIME-SPEND',
+    ChartSettings.TEXT.TIME_SPEND,
     (val) => getFormattedDuration(val),
   ));
 };

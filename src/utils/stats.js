@@ -1,4 +1,5 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {ChartSettings} from '../const';
 
 export const getChartLabels = (points) => points.map((point) => point.type.toUpperCase());
 
@@ -47,47 +48,47 @@ export const getPointsDuration = (points, types) => {
 export const getChartSettings = (labels, data, text, formatter) => {
   return {
     plugins: [ChartDataLabels],
-    type: 'horizontalBar',
+    type: ChartSettings.TYPE,
     data: {
       labels,
       datasets: [{
         data,
-        backgroundColor: '#ffffff',
-        hoverBackgroundColor: '#ffffff',
-        anchor: 'start',
+        backgroundColor: ChartSettings.COLOR.WHITE,
+        hoverBackgroundColor: ChartSettings.COLOR.WHITE,
+        anchor: ChartSettings.ANCHOR.START,
       }],
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 13,
+            size: ChartSettings.FONT_SIZE.DATA_LABELS,
           },
-          color: '#000000',
-          anchor: 'end',
-          align: 'start',
+          color: ChartSettings.COLOR.BLACK,
+          anchor: ChartSettings.ANCHOR.END,
+          align: ChartSettings.ALIGN,
           formatter,
         },
       },
       title: {
         display: true,
         text,
-        fontColor: '#000000',
-        fontSize: 23,
-        position: 'left',
+        fontColor: ChartSettings.COLOR.BLACK,
+        fontSize: ChartSettings.FONT_SIZE.TITLE,
+        position: ChartSettings.TITLE_POSITION,
       },
       scales: {
         yAxes: [{
           ticks: {
-            fontColor: '#000000',
-            padding: 5,
-            fontSize: 13,
+            fontColor: ChartSettings.COLOR.BLACK,
+            padding: ChartSettings.TICKS_PADDING,
+            fontSize: ChartSettings.FONT_SIZE.TICKS,
           },
           gridLines: {
             display: false,
             drawBorder: false,
           },
-          barThickness: 44,
+          barThickness: ChartSettings.BAR_THICKNESS,
         }],
         xAxes: [{
           ticks: {
@@ -98,7 +99,7 @@ export const getChartSettings = (labels, data, text, formatter) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: 50,
+          minBarLength: ChartSettings.MIN_BAR_LENGTH,
         }],
       },
       legend: {

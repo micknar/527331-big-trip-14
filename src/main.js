@@ -11,7 +11,7 @@ import DestinationsData from './data/destinations';
 import OffersData from './data/offers';
 import Api from './api';
 
-const AUTHORIZATION = 'Basic adgdcghgf6';
+const AUTHORIZATION = 'Basic adgfdcgchgf6';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const addPointBtn = document.querySelector('.trip-main__event-add-btn');
@@ -68,8 +68,6 @@ api
   .then((points) => {
     pointsModel.set(UpdateType.INIT, points);
     tripMainPresenter.init();
-    //console.log(points[0].durationTimestamp)
-    //render(Container.PAGE_MAIN, new StatsView(pointsModel.get()), RenderPosition.BEFOREEND);
   })
   .catch(() => {
     pointsModel.set(UpdateType.INIT, []);
