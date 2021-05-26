@@ -23,11 +23,11 @@ export default class MainNav extends AbstractView {
   }
 
   setNavItem(navItem) {
+    const items = this.getElement().querySelectorAll('.trip-tabs__btn');
     const item = this.getElement().querySelector(`[data-nav-item=${navItem}]`);
 
-    if (item !== null) {
-      item.classList.add('trip-tabs__btn--active');
-    }
+    items.forEach((item) => item.classList.remove('trip-tabs__btn--active'));
+    item.classList.add('trip-tabs__btn--active');
   }
 
   setMainNavClickHandler(callback) {
