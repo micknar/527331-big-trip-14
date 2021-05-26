@@ -1,6 +1,7 @@
 import MainNavView from './view/main-nav';
+import StatsView from './view/stats';
 import {render} from './utils/render';
-import {Container, UpdateType} from './const';
+import {Container, UpdateType, NavItem, FilterType, RenderPosition} from './const';
 import TripPresenter from './presenter/trip';
 import TripMainPresenter from './presenter/trip-main';
 import FilterPresenter from './presenter/filter';
@@ -25,12 +26,35 @@ const api = new Api(END_POINT, AUTHORIZATION, destinationsData, offersData);
 const tripPresenter = new TripPresenter(Container.EVENTS, pointsModel, destinationsData, offersData, filterModel, api);
 const filterPresenter = new FilterPresenter(Container.FILTERS, filterModel, pointsModel);
 const tripMainPresenter = new TripMainPresenter(Container.MAIN, pointsModel);
+const mainNavComponent = new MainNavView();
 
 addPointBtn.addEventListener('click', () => {
   tripPresenter.createPoint();
 });
 
-render(Container.MENU, new MainNavView());
+render(Container.MENU, mainNavComponent);
+
+const handleMainNavClick = (navItem) => {
+  switch (navItem) {
+    case NavItem.TABLE:
+      mainNavComponent.setNavItem(NavItem.TABLE);
+      tripPresenter.init();
+      Container.EVENTS.classList.remove('trip-events--hidden');
+      filterPresenter.removeDisabled();
+      filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+      break;
+    case NavItem.STATS:
+      mainNavComponent.setNavItem(NavItem.STATS);
+      Container.EVENTS.classList.add('trip-events--hidden');
+      tripPresenter.destroy();
+      addPointBtn.disabled = true;
+      filterPresenter.setDisabled();
+      render(Container.PAGE_MAIN, new StatsView(), RenderPosition.BEFOREEND);
+      break;
+  }
+};
+
+mainNavComponent.setMainNavClickHandler(handleMainNavClick);
 
 filterPresenter.init();
 tripPresenter.init();

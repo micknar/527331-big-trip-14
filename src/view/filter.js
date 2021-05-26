@@ -31,15 +31,15 @@ export default class Filter extends AbstractView {
     return createFilterTemplate(this._activeFilter);
   }
 
+  setFilterTypeChangeHandler(callback) {
+    this._callback.filterTypeChange = callback;
+    this.getElement().addEventListener('click', this._filterTypeChangeHandler);
+  }
+
   _filterTypeChangeHandler(evt) {
     if (evt.target.tagName !== 'INPUT') {
       return;
     }
     this._callback.filterTypeChange(evt.target.value);
-  }
-
-  setFilterTypeChangeHandler(callback) {
-    this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener('click', this._filterTypeChangeHandler);
   }
 }

@@ -45,12 +45,23 @@ export default class Trip {
     this._pointsModel.addObserver(this._handleModelEvent);
 
     this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._destinations, this._offers, this._handleViewAction);
+
+    this._addPointBtn.disabled = false;
   }
 
   createPoint() {
     this._currentSortType = SortType.DAY;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this._pointNewPresenter.init();
+  }
+
+  destroy() {
+    this._clearTrip({resetSortType: true});
+
+    remove(this._pointsListComponent);
+
+    this._filterModel.removeObserver(this._handleModelEvent);
+    this._pointsModel.removeObserver(this._handleModelEvent);
   }
 
   _getPoints() {

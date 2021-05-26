@@ -33,6 +33,16 @@ export default class Filter {
     }
   }
 
+  setDisabled() {
+    this._filterComponent.getElement().querySelectorAll('.trip-filters__filter-input')
+      .forEach((input) => input.setAttribute('disabled', 'true'));
+  }
+
+  removeDisabled() {
+    this._filterComponent.getElement().querySelectorAll('.trip-filters__filter-input')
+      .forEach((input) => input.removeAttribute('disabled'));
+  }
+
   _handleModelEvent() {
     this.init();
   }

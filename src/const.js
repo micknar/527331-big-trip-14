@@ -47,6 +47,7 @@ export const RenderPosition = {
 };
 
 export const Container = {
+  PAGE_MAIN: document.querySelector('.page-main .page-body__container'),
   MAIN: document.querySelector('.trip-main'),
   MENU: document.querySelector('.trip-controls__navigation'),
   FILTERS: document.querySelector('.trip-controls__filters'),
@@ -69,4 +70,9 @@ export const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+};
+
+export const NavItem = {
+  TABLE: 'TABLE',
+  STATS: 'STATS',
 };
