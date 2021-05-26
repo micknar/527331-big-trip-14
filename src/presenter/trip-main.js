@@ -16,7 +16,7 @@ export default class TripMain {
 
   init() {
     const prevComponent = this._tripMainComponent;
-    this._points = this._pointsModel.getPoints();
+    this._points = this._pointsModel.get();
 
     if (this._points.length > 0) {
       this._tripMainComponent = new TripMainView(this._points);

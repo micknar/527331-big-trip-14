@@ -202,7 +202,7 @@ export default class PointEditor extends SmartView {
   }
 
   getTemplate() {
-    return createPointEditorTemplate(this._destinations.getDestinations(), this._offers.getOffers(), this._data);
+    return createPointEditorTemplate(this._destinations.get(), this._offers.get(), this._data);
   }
 
   reset(point) {
@@ -310,7 +310,7 @@ export default class PointEditor extends SmartView {
   }
 
   _destinationChangeHandler(evt) {
-    const allDestinations = this._destinations.getDestinations();
+    const allDestinations = this._destinations.get();
     const isExist = allDestinations.find((item) => item.name === evt.target.value);
 
     if (!isExist) {
@@ -336,7 +336,7 @@ export default class PointEditor extends SmartView {
     const checkedOfferTitle = evt.target.dataset.offerTitle;
     const offers = this._data.offers;
 
-    const availableOffers = this._offers.getOffers().filter((item) => item.type === this._data.type)[0].offers;
+    const availableOffers = this._offers.get().filter((item) => item.type === this._data.type)[0].offers;
     const checkedOffer = availableOffers.find((item) => item.title === checkedOfferTitle);
 
     const newOffers = offers.find((item) => item.title === checkedOfferTitle)

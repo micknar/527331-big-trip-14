@@ -3,11 +3,11 @@ export default class Offers {
     this._offers = [];
   }
 
-  setOffers(offers) {
+  set(offers) {
     this._offers = offers;
   }
 
-  getOffers() {
+  get() {
     return this._offers;
   }
 }

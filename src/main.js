@@ -41,7 +41,7 @@ const handleMainNavClick = (navItem) => {
       tripPresenter.init();
       Container.EVENTS.classList.remove('trip-events--hidden');
       filterPresenter.removeDisabled();
-      filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+      filterModel.set(UpdateType.MAJOR, FilterType.EVERYTHING);
       break;
     case NavItem.STATS:
       mainNavComponent.setNavItem(NavItem.STATS);
@@ -62,9 +62,9 @@ tripPresenter.init();
 api
   .getData()
   .then((points) => {
-    pointsModel.setPoints(UpdateType.INIT, points);
+    pointsModel.set(UpdateType.INIT, points);
     tripMainPresenter.init();
   })
   .catch(() => {
-    pointsModel.setPoints(UpdateType.INIT, []);
+    pointsModel.set(UpdateType.INIT, []);
   });

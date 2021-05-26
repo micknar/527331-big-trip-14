@@ -39,7 +39,7 @@ export default class Trip {
   init() {
     this._renderSort();
     this._renderPointsListContainer();
-    this._renderTrip();
+    this._render();
 
     this._filterModel.addObserver(this._handleModelEvent);
     this._pointsModel.addObserver(this._handleModelEvent);
@@ -49,14 +49,8 @@ export default class Trip {
     this._addPointBtn.disabled = false;
   }
 
-  createPoint() {
-    this._currentSortType = SortType.DAY;
-    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this._pointNewPresenter.init();
-  }
-
   destroy() {
-    this._clearTrip({resetSortType: true});
+    this._clear({resetSortType: true});
 
     remove(this._pointsListComponent);
 
@@ -64,9 +58,15 @@ export default class Trip {
     this._pointsModel.removeObserver(this._handleModelEvent);
   }
 
+  createPoint() {
+    this._currentSortType = SortType.DAY;
+    this._filterModel.set(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this._pointNewPresenter.init();
+  }
+
   _getPoints() {
-    const filterType = this._filterModel.getFilter();
-    const points = this._pointsModel.getPoints().slice();
+    const filterType = this._filterModel.get();
+    const points = this._pointsModel.get().slice();
     const filteredPoints = getFilteredPoints(points, filterType);
 
     switch (this._currentSortType) {
@@ -113,7 +113,7 @@ export default class Trip {
     render(this._tripContainer, this._loadingComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _renderTrip() {
+  _render() {
     if (this._isLoading) {
       this._renderLoading();
       return;
@@ -139,7 +139,7 @@ export default class Trip {
     this._pointPresenter[point.id] = pointPresenter;
   }
 
-  _clearTrip({resetSortType = false} = {}) {
+  _clear({resetSortType = false} = {}) {
     remove(this._noPointsComponent);
     remove(this._loadingComponent);
     this._pointNewPresenter.destroy();
@@ -171,9 +171,9 @@ export default class Trip {
 
     this._currentSortType = sortType;
 
-    this._clearTrip();
+    this._clear();
     this._renderSort();
-    this._renderTrip();
+    this._render();
   }
 
   _handleViewAction(actionType, updateType, update) {
@@ -182,7 +182,7 @@ export default class Trip {
         this._pointPresenter[update.id].setViewState(PointPresenterViewState.SAVING);
         this._api.updatePoint(update)
           .then((response) => {
-            this._pointsModel.updatePoint(updateType, response);
+            this._pointsModel.update(updateType, response);
           })
           .catch(() => {
             this._pointPresenter[update.id].setViewState(PointPresenterViewState.ABORTING);
@@ -192,7 +192,7 @@ export default class Trip {
         this._pointNewPresenter.setSaving();
         this._api.addPoint(update)
           .then((response) => {
-            this._pointsModel.addPoint(updateType, response);
+            this._pointsModel.add(updateType, response);
           })
           .catch(() => {
             this._pointNewPresenter.setAborting();
@@ -202,7 +202,7 @@ export default class Trip {
         this._pointPresenter[update.id].setViewState(PointPresenterViewState.DELETING);
         this._api.deletePoint(update)
           .then(() => {
-            this._pointsModel.deletePoint(updateType, update);
+            this._pointsModel.delete(updateType, update);
           })
           .catch(() => {
             this._pointPresenter[update.id].setViewState(PointPresenterViewState.ABORTING);
@@ -217,21 +217,21 @@ export default class Trip {
         this._pointPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
-        this._clearTrip();
+        this._clear();
         this._renderSort();
-        this._renderTrip();
+        this._render();
         break;
       case UpdateType.MAJOR:
-        this._clearTrip({resetSortType: true});
+        this._clear({resetSortType: true});
         this._renderSort();
-        this._renderTrip();
+        this._render();
         break;
       case UpdateType.INIT:
         this._isLoading = false;
         remove(this._loadingComponent);
         this._addPointBtn.disabled = false;
         this._renderSort();
-        this._renderTrip();
+        this._render();
         break;
     }
   }
