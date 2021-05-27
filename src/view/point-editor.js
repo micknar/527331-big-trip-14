@@ -122,11 +122,11 @@ const createPointEditorTemplate = (destinations, allOffers, point) => {
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time">From</label>
           <input class="event__input event__input--time event__input--start" id="event-start-time" type="text" name="event-start-time"
-          value="${dateToFormat(dateFrom, DateFormat.full)}" ${setDisabled(isDisabled)}>
+          value="${dateToFormat(dateFrom, DateFormat.FULL)}" ${setDisabled(isDisabled)}>
           &mdash;
           <label class="visually-hidden" for="event-end-time">To</label>
           <input class="event__input event__input--time event__input--end" id="event-end-time" type="text" name="event-end-time"
-          value="${dateToFormat(dateTo, DateFormat.full)}" ${setDisabled(isDisabled)}>
+          value="${dateToFormat(dateTo, DateFormat.FULL)}" ${setDisabled(isDisabled)}>
         </div>
 
         <div class="event__field-group  event__field-group--price">

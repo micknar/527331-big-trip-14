@@ -8,13 +8,13 @@ export const KeyCode = {
 };
 
 export const DateFormat = {
-  time: 'HH:mm',
-  day: 'DD',
-  month: 'MMM',
-  dayMonth: 'DD MMM',
-  monthDay: 'MMM DD',
-  date: 'YYYY-MM-DD',
-  full: 'DD/MM/YY HH:mm',
+  TIME: 'HH:mm',
+  DAY: 'DD',
+  MONTH: 'MMM',
+  DAY_MONTH: 'DD MMM',
+  MONTH_DAY: 'MMM DD',
+  DATE: 'YYYY-MM-DD',
+  FULL: 'DD/MM/YY HH:mm',
 };
 
 export const Millisecond = {

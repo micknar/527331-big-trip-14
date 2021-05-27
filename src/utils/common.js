@@ -62,14 +62,14 @@ export const getRouteDates = (points) => {
   let dates = points.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
   dates = [new Date(dates[0].dateFrom), new Date(dates[dates.length - 1].dateTo)];
 
-  const finishDate = dateToFormat(dates[1], DateFormat.dayMonth);
+  const finishDate = dateToFormat(dates[1], DateFormat.DAY_MONTH);
 
   const getStartDate = () => {
     let startDate;
 
-    dayjs(dates[0]).format(DateFormat.month) === dayjs(dates[1]).format(DateFormat.month)
-      ? startDate = dayjs(dates[0]).format(DateFormat.day)
-      : startDate = dateToFormat(dates[0], DateFormat.dayMonth);
+    dayjs(dates[0]).format(DateFormat.MONTH) === dayjs(dates[1]).format(DateFormat.MONTH)
+      ? startDate = dayjs(dates[0]).format(DateFormat.DAY)
+      : startDate = dateToFormat(dates[0], DateFormat.DAY_MONTH);
     return startDate;
   };
 
