@@ -64,6 +64,25 @@ export default class Trip {
     this._pointNewPresenter.init();
   }
 
+  _render() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
+    const points =  this._getPoints();
+    const pointsCount = points.length;
+
+    if (pointsCount === 0) {
+      this._renderNoPoints();
+      return;
+    }
+
+    for (let i = 0; i < pointsCount; i++) {
+      this._renderPoint(points[i]);
+    }
+  }
+
   _getPoints() {
     const filterType = this._filterModel.get();
     const points = this._pointsModel.get().slice();
@@ -111,25 +130,6 @@ export default class Trip {
 
   _renderLoading() {
     render(this._container, this._loadingComponent, RenderPosition.AFTERBEGIN);
-  }
-
-  _render() {
-    if (this._isLoading) {
-      this._renderLoading();
-      return;
-    }
-
-    const points =  this._getPoints();
-    const pointsCount = points.length;
-
-    if (pointsCount === 0) {
-      this._renderNoPoints();
-      return;
-    }
-
-    for (let i = 0; i < pointsCount; i++) {
-      this._renderPoint(points[i]);
-    }
   }
 
   _renderPoint(point) {

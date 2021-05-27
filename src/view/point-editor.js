@@ -176,31 +176,6 @@ export default class PointEditor extends SmartView {
     this._setInnerHandlers();
   }
 
-  static parsePointToData(point) {
-    return Object.assign(
-      {},
-      point,
-      {
-        isDisabled: false,
-        isSaving: false,
-        isDeleting: false,
-      },
-    );
-  }
-
-  static parseDataToPoint(data) {
-    data = Object.assign(
-      {},
-      data,
-    );
-
-    delete data.isDisabled;
-    delete data.isSaving;
-    delete data.isDeleting;
-
-    return data;
-  }
-
   getTemplate() {
     return createPointEditorTemplate(this._destinations.get(), this._offers.get(), this._data);
   }
@@ -404,5 +379,30 @@ export default class PointEditor extends SmartView {
         .querySelector('.event__available-offers')
         .addEventListener('change', this._offerToggleHandler);
     }
+  }
+
+  static parsePointToData(point) {
+    return Object.assign(
+      {},
+      point,
+      {
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      },
+    );
+  }
+
+  static parseDataToPoint(data) {
+    data = Object.assign(
+      {},
+      data,
+    );
+
+    delete data.isDisabled;
+    delete data.isSaving;
+    delete data.isDeleting;
+
+    return data;
   }
 }
