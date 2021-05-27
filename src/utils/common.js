@@ -34,35 +34,13 @@ export const getPointDuration = (dateFrom, dateTo) => {
   return getFormattedDuration(getTimestamp(dateFrom, dateTo));
 };
 
-export const areEqualDates = (dateA, dateB) => dayjs(dateA) === dayjs(dateB);
-
-export const isFutureDate = (currentDate, dateFrom) => {
-  return dayjs(currentDate) < dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
-};
-
-export const isPastDate = (currentDate, dateFrom) => {
-  return dayjs(currentDate) > dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
-};
-
-export const getFilteredPoints = (points, filterType) => {
-  const currentDate = dayjs();
-
-  switch (filterType) {
-    case FilterType.EVERYTHING:
-      return points;
-    case FilterType.FUTURE:
-      return points.filter((point) => isFutureDate(currentDate, point.dateFrom));
-    case FilterType.PAST:
-      return points.filter((point) => isPastDate(currentDate, point.dateFrom));
-  }
-};
-
 export const getRoute = (points) => {
   points = points.slice().sort((a, b) => Date.parse(a.dateFrom) - Date.parse(b.dateFrom));
 
-  const cities = new Set(points
-    .slice()
-    .map((point) => point.destination.name),
+  const cities = new Set(
+    points
+      .slice()
+      .map((point) => point.destination.name),
   );
 
   let route = Array.from(cities);
@@ -136,3 +114,32 @@ export const sortByPrice = (points) => {
 };
 
 export const setInputChecked = (active, type) => active === type ? 'checked' : '';
+
+export const getFilteredPoints = (points, filterType) => {
+  const currentDate = dayjs();
+
+  switch (filterType) {
+    case FilterType.EVERYTHING:
+      return points;
+    case FilterType.FUTURE:
+      return points.filter((point) => isFutureDate(currentDate, point.dateFrom));
+    case FilterType.PAST:
+      return points.filter((point) => isPastDate(currentDate, point.dateFrom));
+  }
+};
+
+export const areEqualDates = (dateA, dateB) => dayjs(dateA) === dayjs(dateB);
+
+export const isFutureDate = (currentDate, dateFrom) => {
+  return dayjs(currentDate) < dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
+};
+
+export const isPastDate = (currentDate, dateFrom) => {
+  return dayjs(currentDate) > dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
+};
+
+export const filter = {
+  [FilterType.EVERYTHING]: (points) => points.slice(),
+  [FilterType.FUTURE]: (points) => points.filter((point) => isFutureDate(new Date(), point.dateFrom)),
+  [FilterType.PAST]: (points) => points.filter((point) => isPastDate(new Date(), point.dateFrom)),
+};
