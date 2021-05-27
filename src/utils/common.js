@@ -122,9 +122,9 @@ export const getFilteredPoints = (points, filterType) => {
     case FilterType.EVERYTHING:
       return points;
     case FilterType.FUTURE:
-      return points.filter((point) => isFutureDate(currentDate, point.dateFrom));
+      return points.slice().filter((point) => isFutureDate(currentDate, point.dateFrom));
     case FilterType.PAST:
-      return points.filter((point) => isPastDate(currentDate, point.dateFrom));
+      return points.slice().filter((point) => isPastDate(currentDate, point.dateFrom));
   }
 };
 
