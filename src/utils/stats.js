@@ -56,6 +56,8 @@ export const getChartSettings = (labels, data, text, formatter) => {
         backgroundColor: ChartSettings.COLOR.WHITE,
         hoverBackgroundColor: ChartSettings.COLOR.WHITE,
         anchor: ChartSettings.ANCHOR.START,
+        barThickness: ChartSettings.BAR_THICKNESS,
+        minBarLength: ChartSettings.MIN_BAR_LENGTH,
       }],
     },
     options: {
@@ -88,7 +90,6 @@ export const getChartSettings = (labels, data, text, formatter) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: ChartSettings.BAR_THICKNESS,
         }],
         xAxes: [{
           ticks: {
@@ -99,7 +100,6 @@ export const getChartSettings = (labels, data, text, formatter) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: ChartSettings.MIN_BAR_LENGTH,
         }],
       },
       legend: {
