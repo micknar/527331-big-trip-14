@@ -4,8 +4,8 @@ import {filter} from '../utils/common';
 import {UpdateType, FilterType} from '../const';
 
 export default class Filter {
-  constructor(filterContainer, filterModel, pointsModel) {
-    this._filterContainer = filterContainer;
+  constructor(container, filterModel, pointsModel) {
+    this._container = container;
     this._filterModel = filterModel;
     this._pointsModel = pointsModel;
 
@@ -29,7 +29,7 @@ export default class Filter {
       replace(this._filterComponent, prevFilterComponent);
       remove(prevFilterComponent);
     } else {
-      render(this._filterContainer, this._filterComponent);
+      render(this._container, this._filterComponent);
     }
   }
 

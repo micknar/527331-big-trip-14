@@ -5,8 +5,8 @@ import {isEscKey} from '../utils/common';
 import {Mode, State, UserAction, UpdateType} from '../const';
 
 export default class Point {
-  constructor(pointContainer, destinations, offers, changeData, changeMode) {
-    this._pointContainer = pointContainer;
+  constructor(container, destinations, offers, changeData, changeMode) {
+    this._container = container;
     this._destinations = destinations;
     this._offers = offers;
     this._changeData = changeData;
@@ -40,11 +40,11 @@ export default class Point {
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevPointComponent === null || prevPointEditorComponent === null) {
-      render(this._pointContainer, this._pointComponent);
+      render(this._container, this._pointComponent);
       return;
     }
 
-    if (this._pointContainer.contains(prevPointComponent.getElement())) {
+    if (this._container.contains(prevPointComponent.getElement())) {
       replace(this._pointComponent, prevPointComponent);
     }
 

@@ -10,8 +10,8 @@ import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../ut
 import {SortType, UserAction, UpdateType, FilterType, RenderPosition, State as PointPresenterViewState} from '../const';
 
 export default class Trip {
-  constructor(tripContainer, pointsModel, destinations, offers, filterModel, api) {
-    this._tripContainer = tripContainer;
+  constructor(container, pointsModel, destinations, offers, filterModel, api) {
+    this._container = container;
     this._filterModel = filterModel;
     this._pointsModel = pointsModel;
     this._destinations = destinations;
@@ -90,13 +90,13 @@ export default class Trip {
         replace(this._sortComponent, prevSortComponent);
         remove(prevSortComponent);
       } else {
-        render(this._tripContainer, this._sortComponent, RenderPosition.AFTERBEGIN);
+        render(this._container, this._sortComponent, RenderPosition.AFTERBEGIN);
       }
     }
   }
 
   _renderPointsListContainer() {
-    render(this._tripContainer, this._pointsListComponent);
+    render(this._container, this._pointsListComponent);
   }
 
   _renderNoPoints() {
@@ -106,11 +106,11 @@ export default class Trip {
     }
 
     this._noPointsComponent = new NoPointsView();
-    render(this._tripContainer, this._noPointsComponent);
+    render(this._container, this._noPointsComponent);
   }
 
   _renderLoading() {
-    render(this._tripContainer, this._loadingComponent, RenderPosition.AFTERBEGIN);
+    render(this._container, this._loadingComponent, RenderPosition.AFTERBEGIN);
   }
 
   _render() {
