@@ -1,7 +1,6 @@
 export const CITIES_IN_ROUTE_COUNT = 3;
 export const DEFAULT_POINT_TYPE = 'taxi';
-export const ERROR_ANIMATION_TIMEOUT = 600;
-export const ERROR_ANIMATION_STYLE = 'box-shadow: 0px 0px 20px rgba(216, 15, 15, 0.4)';
+export const SHAKE_ANIMATION_TIMEOUT = 600;
 
 export const KeyCode = {
   ESCAPE: 'Escape',
