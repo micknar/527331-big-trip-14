@@ -115,31 +115,27 @@ export const sortByPrice = (points) => {
 
 export const setInputChecked = (active, type) => active === type ? 'checked' : '';
 
-export const getFilteredPoints = (points, filterType) => {
-  const currentDate = dayjs();
+export const isFutureDate = (from) => {
+  return dayjs(from).isAfter(dayjs(), 'd') || dayjs(from).isSame(dayjs(), 'd');
+};
 
+export const isPastDate = (to) => {
+  return dayjs(to).isBefore(dayjs(), 'd');
+};
+
+export const getFilteredPoints = (points, filterType) => {
   switch (filterType) {
     case FilterType.EVERYTHING:
       return points;
     case FilterType.FUTURE:
-      return points.slice().filter((point) => isFutureDate(currentDate, point.dateFrom));
+      return points.slice().filter((point) => isFutureDate(point.dateFrom));
     case FilterType.PAST:
-      return points.slice().filter((point) => isPastDate(currentDate, point.dateFrom));
+      return points.slice().filter((point) => isPastDate(point.dateTo));
   }
-};
-
-export const areEqualDates = (dateA, dateB) => dayjs(dateA) === dayjs(dateB);
-
-export const isFutureDate = (currentDate, dateFrom) => {
-  return dayjs(currentDate) < dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
-};
-
-export const isPastDate = (currentDate, dateFrom) => {
-  return dayjs(currentDate) > dayjs(dateFrom) && !areEqualDates(currentDate, dateFrom);
 };
 
 export const filter = {
   [FilterType.EVERYTHING]: (points) => points.slice(),
-  [FilterType.FUTURE]: (points) => points.filter((point) => isFutureDate(new Date(), point.dateFrom)),
-  [FilterType.PAST]: (points) => points.filter((point) => isPastDate(new Date(), point.dateFrom)),
+  [FilterType.FUTURE]: (points) => points.slice().filter((point) => isFutureDate(point.dateFrom)),
+  [FilterType.PAST]: (points) => points.slice().filter((point) => isPastDate(point.dateTo)),
 };
