@@ -53,17 +53,17 @@ const createOffersTemplate = (type, allOffers, offers, isDisabled) => {
   }).join('')}
       </div>
     </section>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createDescriptionTemplate = (description) => {
   if (description.length !== 0) {
     return `<p class="event__destination-description">${description}</p>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createPicturesTemplate = (pictures) => {
@@ -75,9 +75,9 @@ const createPicturesTemplate = (pictures) => {
   }).join('')}
     </div>
   </div>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createDestinationTemplate = (destination) => {
@@ -89,9 +89,9 @@ const createDestinationTemplate = (destination) => {
       ${createDescriptionTemplate(description)}
       ${createPicturesTemplate(pictures)}
     </section>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createPointEditorTemplate = (destinations, allOffers, point) => {

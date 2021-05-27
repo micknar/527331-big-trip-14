@@ -13,9 +13,9 @@ const createOffersTemplate = (offers) => {
       </li>`;
   }).join('')}
     </ul>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createPointTemplate = (point) => {

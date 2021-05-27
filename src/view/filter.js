@@ -7,9 +7,9 @@ const setDisabled = (filters, filterType) => {
 
   if (count === 0) {
     return 'disabled';
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createFilterTemplate = (filters, activeFilter) => {
