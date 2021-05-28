@@ -49,7 +49,7 @@ const handleMainNavClick = (navItem) => {
       tripPresenter.init();
       tripEventsNode.classList.remove('trip-events--hidden');
       remove(statsViewComponent);
-      filterPresenter.removeDisabled();
+      filterPresenter.enable();
       filterModel.set(UpdateType.MAJOR, FilterType.EVERYTHING);
       break;
     case NavItem.STATS:

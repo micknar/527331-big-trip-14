@@ -34,13 +34,11 @@ export default class Filter {
   }
 
   setDisabled() {
-    this._filterComponent.getElement().querySelectorAll('.trip-filters__filter-input')
-      .forEach((input) => input.setAttribute('disabled', 'true'));
+    this._filterComponent.setDisabled();
   }
 
-  removeDisabled() {
-    this._filterComponent.getElement().querySelectorAll('.trip-filters__filter-input')
-      .forEach((input) => input.removeAttribute('disabled'));
+  enable() {
+    this._filterComponent.enable();
   }
 
   _getFilters() {
