@@ -47,7 +47,7 @@ const createPointTemplate = (point) => {
         <p class="event__duration">${getPointDuration(dateFrom, dateTo)}</p>
       </div>
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${getPointPrice(basePrice, offers)}</span>
+        &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       ${createOffersTemplate(offers)}
