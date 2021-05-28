@@ -1,5 +1,5 @@
 import AbstractView from './abstract';
-import {dateToFormat, getPointDuration, getPointPrice} from '../utils/common';
+import {dateToFormat, getPointDuration} from '../utils/common';
 import {DateFormat} from '../const';
 
 const createOffersTemplate = (offers) => {

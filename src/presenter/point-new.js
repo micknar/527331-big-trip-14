@@ -41,7 +41,7 @@ export default class PointNew {
 
     this._pointEditorComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditorComponent.setDeleteClickHandler(this._handleDeleteClick);
-    this._pointEditorComponent.setDatepickers();
+    this._pointEditorComponent.setDatePickers();
 
     render(this._pointsListContainer, this._pointEditorComponent, RenderPosition.AFTERBEGIN);
 

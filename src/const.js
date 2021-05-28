@@ -81,7 +81,7 @@ export const NavItem = {
   STATS: 'STATS',
 };
 
-export const DatepickerSettings = {
+export const DatePickerSettings = {
   enableTime: true,
   'time_24hr': true,
   dateFormat: 'd/m/y H:i',

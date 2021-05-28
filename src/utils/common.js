@@ -87,14 +87,6 @@ export const getTotalPrice = (item, price) => {
   return result;
 };
 
-export const getPointPrice = (basePrice, offers) => {
-  let offersPrice = 0;
-
-  offers.forEach((offer) => offersPrice += offer.price);
-
-  return basePrice + offersPrice;
-};
-
 export const isCheckedOffer = (availableOffer, checkedOffers) => {
   if (availableOffer && checkedOffers) {
     return checkedOffers.some((item) =>  [item.title].indexOf(availableOffer.title) !== -1);
@@ -110,7 +102,7 @@ export const sortByTime = (points) => {
 };
 
 export const sortByPrice = (points) => {
-  return points.sort((a, b) => getPointPrice(b.basePrice, b.offers) - getPointPrice(a.basePrice, a.offers));
+  return points.sort((a, b) => b.basePrice - a.basePrice);
 };
 
 export const setInputChecked = (active, type) => active === type ? 'checked' : '';

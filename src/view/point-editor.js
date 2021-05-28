@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import SmartView from './smart';
-import {DateFormat, DatepickerSettings} from '../const';
+import {DateFormat, DatePickerSettings} from '../const';
 import {dateToFormat, isCheckedOffer} from '../utils/common';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -185,10 +185,10 @@ export default class PointEditor extends SmartView {
       PointEditor.parsePointToData(point),
     );
 
-    this.resetDatepickers();
+    this.resetDatePickers();
   }
 
-  resetDatepickers() {
+  resetDatePickers() {
     if (this._dateFromPicker) {
       this._dateFromPicker.destroy();
       this._dateFromPicker = null;
@@ -202,7 +202,7 @@ export default class PointEditor extends SmartView {
 
   restoreHandlers() {
     this._setInnerHandlers();
-    this.setDatepickers();
+    this.setDatePickers();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
     this.setCloseClickHandler(this._callback.closeClick);
@@ -210,18 +210,18 @@ export default class PointEditor extends SmartView {
 
   removeElement() {
     super.removeElement();
-    this.resetDatepickers();
+    this.resetDatePickers();
   }
 
-  setDatepickers() {
-    this.resetDatepickers();
+  setDatePickers() {
+    this.resetDatePickers();
     this._minStartDate = this._data.dateTo;
 
     this._dateFromPicker = flatpickr(
       this.getElement().querySelector('.event__input--start'),
       Object.assign(
         {},
-        DatepickerSettings,
+        DatePickerSettings,
         {
           defaultDate: dayjs(this._data.dateFrom).toDate(),
           onChange: this._dateFromChangeHandler,
@@ -233,7 +233,7 @@ export default class PointEditor extends SmartView {
       this.getElement().querySelector('.event__input--end'),
       Object.assign(
         {},
-        DatepickerSettings,
+        DatePickerSettings,
         {
           minDate: dayjs(this._data.dateFrom).toDate(),
           defaultDate: dayjs(this._data.dateTo).toDate(),
@@ -265,7 +265,7 @@ export default class PointEditor extends SmartView {
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit(PointEditor.parseDataToPoint(this._data));
-    this.resetDatepickers();
+    this.resetDatePickers();
   }
 
   _formDeleteClickHandler(evt) {
