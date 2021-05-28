@@ -13,9 +13,9 @@ const createOffersTemplate = (offers) => {
       </li>`;
   }).join('')}
     </ul>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createPointTemplate = (point) => {
@@ -25,8 +25,8 @@ const createPointTemplate = (point) => {
   return `<li class="trip-events__item">
     <div class="event" id=${id}>
       <time class="event__date"
-      datetime="${dateToFormat(dateFrom, DateFormat.date)}">
-      ${dateToFormat(dateFrom, DateFormat.monthDay)}
+      datetime="${dateToFormat(dateFrom, DateFormat.DATE)}">
+      ${dateToFormat(dateFrom, DateFormat.MONTH_DAY)}
       </time>
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
@@ -35,13 +35,13 @@ const createPointTemplate = (point) => {
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time"
-          datetime="${dateToFormat(dateFrom, DateFormat.date)}T${dateToFormat(dateFrom, DateFormat.time)}">
-          ${dateToFormat(dateFrom, DateFormat.time)}
+          datetime="${dateToFormat(dateFrom, DateFormat.DATE)}T${dateToFormat(dateFrom, DateFormat.TIME)}">
+          ${dateToFormat(dateFrom, DateFormat.TIME)}
           </time>
           &mdash;
           <time class="event__end-time"
-          datetime="${dateToFormat(dateTo, DateFormat.date)}T${dateToFormat(dateTo, DateFormat.time)}">
-          ${dateToFormat(dateTo, DateFormat.time)}
+          datetime="${dateToFormat(dateTo, DateFormat.DATE)}T${dateToFormat(dateTo, DateFormat.TIME)}">
+          ${dateToFormat(dateTo, DateFormat.TIME)}
           </time>
         </p>
         <p class="event__duration">${getPointDuration(dateFrom, dateTo)}</p>

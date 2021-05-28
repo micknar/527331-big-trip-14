@@ -51,14 +51,13 @@ export default class Api {
       .then((data) => {
         const [points, destinations, offers] = data;
 
-        this._destinationsData.setDestinations(destinations);
-        this._offersData.setOffers(offers);
+        this._destinationsData.set(destinations);
+        this._offersData.set(offers);
 
         return points;
       })
       .catch(() => {
-        this._destinationsData.setDestinations([]);
-        this._offersData.setOffers([]);
+        this._offersData.set([]);
       });
   }
 

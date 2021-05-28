@@ -3,8 +3,8 @@ import {render, replace, remove} from '../utils/render';
 import {RenderPosition} from '../const';
 
 export default class TripMain {
-  constructor(tripMainContainer, pointsModel) {
-    this._tripMainContainer = tripMainContainer;
+  constructor(container, pointsModel) {
+    this._container = container;
     this._pointsModel = pointsModel;
 
     this._tripMainComponent = null;
@@ -16,7 +16,7 @@ export default class TripMain {
 
   init() {
     const prevComponent = this._tripMainComponent;
-    this._points = this._pointsModel.getPoints();
+    this._points = this._pointsModel.get();
 
     if (this._points.length > 0) {
       this._tripMainComponent = new TripMainView(this._points);
@@ -25,7 +25,7 @@ export default class TripMain {
         replace(this._tripMainComponent, prevComponent);
         remove(prevComponent);
       } else {
-        render(this._tripMainContainer, this._tripMainComponent, RenderPosition.AFTERBEGIN);
+        render(this._container, this._tripMainComponent, RenderPosition.AFTERBEGIN);
       }
     }
 

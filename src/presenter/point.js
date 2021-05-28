@@ -1,11 +1,12 @@
 import PointView from '../view/point';
 import PointEditorView from '../view/point-editor';
 import {render, replace, remove} from '../utils/render';
+import {isEscKey} from '../utils/common';
 import {Mode, State, UserAction, UpdateType} from '../const';
 
 export default class Point {
-  constructor(pointContainer, destinations, offers, changeData, changeMode) {
-    this._pointContainer = pointContainer;
+  constructor(container, destinations, offers, changeData, changeMode) {
+    this._container = container;
     this._destinations = destinations;
     this._offers = offers;
     this._changeData = changeData;
@@ -39,11 +40,11 @@ export default class Point {
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevPointComponent === null || prevPointEditorComponent === null) {
-      render(this._pointContainer, this._pointComponent);
+      render(this._container, this._pointComponent);
       return;
     }
 
-    if (this._pointContainer.contains(prevPointComponent.getElement())) {
+    if (this._container.contains(prevPointComponent.getElement())) {
       replace(this._pointComponent, prevPointComponent);
     }
 
@@ -89,8 +90,8 @@ export default class Point {
         });
         break;
       case State.ABORTING:
-        this._pointComponent.shake(resetFormState);
-        this._pointEditorComponent.shake(resetFormState);
+        this._pointComponent.querySelector('.event').shake(resetFormState);
+        this._pointEditorComponent.querySelector('.event--edit').shake(resetFormState);
         break;
     }
   }
@@ -116,7 +117,7 @@ export default class Point {
   }
 
   _escKeyDownHandler(evt) {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
+    if (isEscKey(evt)) {
       evt.preventDefault();
       this._closeFormWithoutSave();
     }

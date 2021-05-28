@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import SmartView from './smart';
-import {DateFormat} from '../const';
+import {DateFormat, DatepickerSettings} from '../const';
 import {dateToFormat, isCheckedOffer} from '../utils/common';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -53,17 +53,17 @@ const createOffersTemplate = (type, allOffers, offers, isDisabled) => {
   }).join('')}
       </div>
     </section>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createDescriptionTemplate = (description) => {
   if (description.length !== 0) {
     return `<p class="event__destination-description">${description}</p>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createPicturesTemplate = (pictures) => {
@@ -75,9 +75,9 @@ const createPicturesTemplate = (pictures) => {
   }).join('')}
     </div>
   </div>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createDestinationTemplate = (destination) => {
@@ -89,9 +89,9 @@ const createDestinationTemplate = (destination) => {
       ${createDescriptionTemplate(description)}
       ${createPicturesTemplate(pictures)}
     </section>`;
-  } else {
-    return '';
   }
+
+  return '';
 };
 
 const createPointEditorTemplate = (destinations, allOffers, point) => {
@@ -122,11 +122,11 @@ const createPointEditorTemplate = (destinations, allOffers, point) => {
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time">From</label>
           <input class="event__input event__input--time event__input--start" id="event-start-time" type="text" name="event-start-time"
-          value="${dateToFormat(dateFrom, DateFormat.full)}" ${setDisabled(isDisabled)}>
+          value="${dateToFormat(dateFrom, DateFormat.FULL)}" ${setDisabled(isDisabled)}>
           &mdash;
           <label class="visually-hidden" for="event-end-time">To</label>
           <input class="event__input event__input--time event__input--end" id="event-end-time" type="text" name="event-end-time"
-          value="${dateToFormat(dateTo, DateFormat.full)}" ${setDisabled(isDisabled)}>
+          value="${dateToFormat(dateTo, DateFormat.FULL)}" ${setDisabled(isDisabled)}>
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -176,33 +176,8 @@ export default class PointEditor extends SmartView {
     this._setInnerHandlers();
   }
 
-  static parsePointToData(point) {
-    return Object.assign(
-      {},
-      point,
-      {
-        isDisabled: false,
-        isSaving: false,
-        isDeleting: false,
-      },
-    );
-  }
-
-  static parseDataToPoint(data) {
-    data = Object.assign(
-      {},
-      data,
-    );
-
-    delete data.isDisabled;
-    delete data.isSaving;
-    delete data.isDeleting;
-
-    return data;
-  }
-
   getTemplate() {
-    return createPointEditorTemplate(this._destinations.getDestinations(), this._offers.getOffers(), this._data);
+    return createPointEditorTemplate(this._destinations.get(), this._offers.get(), this._data);
   }
 
   reset(point) {
@@ -244,25 +219,27 @@ export default class PointEditor extends SmartView {
 
     this._dateFromPicker = flatpickr(
       this.getElement().querySelector('.event__input--start'),
-      {
-        enableTime: true,
-        time_24hr: true,
-        dateFormat: 'd/m/y H:i',
-        defaultDate: dayjs(this._data.dateFrom).toDate(),
-        onChange: this._dateFromChangeHandler,
-      },
+      Object.assign(
+        {},
+        DatepickerSettings,
+        {
+          defaultDate: dayjs(this._data.dateFrom).toDate(),
+          onChange: this._dateFromChangeHandler,
+        },
+      ),
     );
 
     this._dateToPicker = flatpickr(
       this.getElement().querySelector('.event__input--end'),
-      {
-        enableTime: true,
-        time_24hr: true,
-        dateFormat: 'd/m/y H:i',
-        minDate: dayjs(this._data.dateFrom).toDate(),
-        defaultDate: dayjs(this._data.dateTo).toDate(),
-        onChange: this._dateToChangeHandler,
-      },
+      Object.assign(
+        {},
+        DatepickerSettings,
+        {
+          minDate: dayjs(this._data.dateFrom).toDate(),
+          defaultDate: dayjs(this._data.dateTo).toDate(),
+          onChange: this._dateToChangeHandler,
+        },
+      ),
     );
   }
 
@@ -310,7 +287,7 @@ export default class PointEditor extends SmartView {
   }
 
   _destinationChangeHandler(evt) {
-    const allDestinations = this._destinations.getDestinations();
+    const allDestinations = this._destinations.get();
     const isExist = allDestinations.find((item) => item.name === evt.target.value);
 
     if (!isExist) {
@@ -336,7 +313,7 @@ export default class PointEditor extends SmartView {
     const checkedOfferTitle = evt.target.dataset.offerTitle;
     const offers = this._data.offers;
 
-    const availableOffers = this._offers.getOffers().filter((item) => item.type === this._data.type)[0].offers;
+    const availableOffers = this._offers.get().filter((item) => item.type === this._data.type)[0].offers;
     const checkedOffer = availableOffers.find((item) => item.title === checkedOfferTitle);
 
     const newOffers = offers.find((item) => item.title === checkedOfferTitle)
@@ -402,5 +379,30 @@ export default class PointEditor extends SmartView {
         .querySelector('.event__available-offers')
         .addEventListener('change', this._offerToggleHandler);
     }
+  }
+
+  static parsePointToData(point) {
+    return Object.assign(
+      {},
+      point,
+      {
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      },
+    );
+  }
+
+  static parseDataToPoint(data) {
+    data = Object.assign(
+      {},
+      data,
+    );
+
+    delete data.isDisabled;
+    delete data.isSaving;
+    delete data.isDeleting;
+
+    return data;
   }
 }
