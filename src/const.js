@@ -50,23 +50,15 @@ export const RenderPosition = {
   BEFOREBEGIN: 'beforebegin',
 };
 
-export const Container = {
-  PAGE_MAIN: document.querySelector('.page-main .page-body__container'),
-  MAIN: document.querySelector('.trip-main'),
-  MENU: document.querySelector('.trip-controls__navigation'),
-  FILTERS: document.querySelector('.trip-controls__filters'),
-  EVENTS: document.querySelector('.trip-events'),
-};
-
 export const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
-  ABORTING: 'ABORTING',
 };
 
 export const State = {
   SAVING: 'SAVING',
   DELETING: 'DELETING',
+  ABORTING: 'ABORTING',
 };
 
 export const UpdateType = {
@@ -81,7 +73,7 @@ export const NavItem = {
   STATS: 'STATS',
 };
 
-export const DatepickerSettings = {
+export const DatePickerSettings = {
   enableTime: true,
   'time_24hr': true,
   dateFormat: 'd/m/y H:i',

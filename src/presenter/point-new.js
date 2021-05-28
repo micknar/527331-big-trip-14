@@ -2,6 +2,7 @@ import PointEditorView from '../view/point-editor';
 import {render, remove} from '../utils/render';
 import {isEscKey} from '../utils/common';
 import {UserAction, UpdateType, RenderPosition, DEFAULT_POINT_TYPE} from '../const';
+import {addPointBtnNode} from '../main';
 
 export default class PointNew {
   constructor(pointsListContainer, destinations, offers, changeData) {
@@ -16,7 +17,7 @@ export default class PointNew {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
 
-    this._addPointBtn = document.querySelector('.trip-main__event-add-btn');
+    this._addPointBtn = addPointBtnNode;
 
     this._blankPoint = {
       id: -1,
@@ -41,7 +42,7 @@ export default class PointNew {
 
     this._pointEditorComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditorComponent.setDeleteClickHandler(this._handleDeleteClick);
-    this._pointEditorComponent.setDatepickers();
+    this._pointEditorComponent.setDatePickers();
 
     render(this._pointsListContainer, this._pointEditorComponent, RenderPosition.AFTERBEGIN);
 
