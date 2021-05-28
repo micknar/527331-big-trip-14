@@ -8,6 +8,7 @@ import LoadingView from '../view/loading';
 import {render, replace, remove} from '../utils/render';
 import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../utils/common';
 import {SortType, UserAction, UpdateType, FilterType, RenderPosition, State as PointPresenterViewState} from '../const';
+import {addPointBtnNode} from '../main';
 
 export default class Trip {
   constructor(container, pointsModel, destinations, offers, filterModel, api) {
@@ -21,7 +22,7 @@ export default class Trip {
 
     this._currentSortType = SortType.DAY;
     this._isLoading = true;
-    this._addPointBtn = document.querySelector('.trip-main__event-add-btn');
+    this._addPointBtn = addPointBtnNode;
 
     this._sortComponent = null;
     this._noPointsComponent = null;

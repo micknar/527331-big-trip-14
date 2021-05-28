@@ -103,14 +103,14 @@ export default class Point {
 
   _replaceFormToPoint() {
     replace(this._pointComponent, this._pointEditorComponent);
-    this._pointEditorComponent.resetDatepickers();
+    this._pointEditorComponent.resetDatePickers();
     document.removeEventListener('keydown', this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;
   }
 
   _replacePointToForm() {
     replace(this._pointEditorComponent, this._pointComponent);
-    this._pointEditorComponent.setDatepickers();
+    this._pointEditorComponent.setDatePickers();
     document.addEventListener('keydown', this._escKeyDownHandler);
     this._changeMode();
     this._mode = Mode.EDITING;
