@@ -18,7 +18,7 @@ const bodyNode = document.querySelector('.page-body');
 const tripMainNode = bodyNode.querySelector('.trip-main');
 const menuNode = tripMainNode.querySelector('.trip-controls__navigation');
 const filtersNode = tripMainNode.querySelector('.trip-controls__filters');
-export const addPointBtnNode = tripMainNode.querySelector('.trip-main__event-add-btn');
+const addPointBtnNode = tripMainNode.querySelector('.trip-main__event-add-btn');
 const pageContainerNode = bodyNode.querySelector('.page-main .page-body__container');
 const tripEventsNode = bodyNode.querySelector('.trip-events');
 
@@ -79,3 +79,5 @@ api
   .catch(() => {
     pointsModel.set(UpdateType.INIT, []);
   });
+
+export {addPointBtnNode};
