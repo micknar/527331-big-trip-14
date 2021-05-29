@@ -1,8 +1,9 @@
 import PointView from '../view/point';
 import PointEditorView from '../view/point-editor';
 import {render, replace, remove} from '../utils/render';
-import {isEscKey} from '../utils/common';
-import {Mode, State, UserAction, UpdateType} from '../const';
+import {isEscKey, isOnline} from '../utils/common';
+import {toast} from '../utils/toast';
+import {Mode, State, UserAction, UpdateType, OfflineMessage} from '../const';
 
 export default class Point {
   constructor(container, destinations, offers, changeData, changeMode) {
@@ -124,6 +125,11 @@ export default class Point {
   }
 
   _handleFormSubmit(point) {
+    if (!isOnline()) {
+      toast(OfflineMessage.SAVE);
+      return;
+    }
+
     this._changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
@@ -132,6 +138,11 @@ export default class Point {
   }
 
   _handleDeleteClick(point) {
+    if (!isOnline()) {
+      toast(OfflineMessage.DELETE);
+      return;
+    }
+
     this._changeData(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
@@ -140,6 +151,11 @@ export default class Point {
   }
 
   _handleEditClick() {
+    if (!isOnline()) {
+      toast(OfflineMessage.EDIT);
+      return;
+    }
+
     this._replacePointToForm();
   }
 

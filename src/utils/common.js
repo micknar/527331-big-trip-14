@@ -135,3 +135,7 @@ export const filter = {
   [FilterType.FUTURE]: (points) => points.slice().filter((point) => isFutureDate(point.dateFrom, point.dateTo)),
   [FilterType.PAST]: (points) => points.slice().filter((point) => isPastDate(point.dateFrom, point.dateTo)),
 };
+
+export const isOnline = () => {
+  return window.navigator.onLine;
+};
