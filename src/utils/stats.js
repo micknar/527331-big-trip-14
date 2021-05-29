@@ -13,7 +13,11 @@ export const getPointsPrice = (points, types) => {
   const data = Array(types.length).fill(null);
 
   types.forEach((type, index) => {
-    points.filter((point) => point.type === type ? data[index] += point.basePrice : data[index]);
+    points
+      .filter((point) => point.type === type)
+      .forEach((point) => {
+        data[index] += point.basePrice;
+      });
   });
 
   return data;
@@ -31,7 +35,11 @@ export const getPointsDuration = (points, types) => {
   const data = Array(types.length).fill(null);
 
   types.forEach((type, index) => {
-    points.filter((point) => point.type === type ? data[index] += point.durationTimestamp : data[index]);
+    points
+      .filter((point) => point.type === type)
+      .forEach((point) => {
+        data[index] += point.durationTimestamp;
+      });
   });
 
   return data;

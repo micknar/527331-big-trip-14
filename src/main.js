@@ -11,7 +11,7 @@ import DestinationsData from './data/destinations';
 import OffersData from './data/offers';
 import Api from './api';
 
-const AUTHORIZATION = 'Basic adgfd6xv5hgf6';
+const AUTHORIZATION = 'Basic adgfd6cxv5hgf6';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const bodyNode = document.querySelector('.page-body');
