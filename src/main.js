@@ -11,17 +11,16 @@ import DestinationsData from './data/destinations';
 import OffersData from './data/offers';
 import Api from './api';
 
-const AUTHORIZATION = 'Basic adgfd6cxv5hgf6';
+const AUTHORIZATION = 'Basic ad2dsdfxv5hgf6';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const bodyNode = document.querySelector('.page-body');
 const tripMainNode = bodyNode.querySelector('.trip-main');
 const menuNode = tripMainNode.querySelector('.trip-controls__navigation');
 const filtersNode = tripMainNode.querySelector('.trip-controls__filters');
-export const addPointBtnNode = tripMainNode.querySelector('.trip-main__event-add-btn');
+const addPointBtnNode = tripMainNode.querySelector('.trip-main__event-add-btn');
 const pageContainerNode = bodyNode.querySelector('.page-main .page-body__container');
 const tripEventsNode = bodyNode.querySelector('.trip-events');
-
 
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
@@ -79,3 +78,5 @@ api
   .catch(() => {
     pointsModel.set(UpdateType.INIT, []);
   });
+
+export {addPointBtnNode};

@@ -90,8 +90,8 @@ export default class Point {
         });
         break;
       case State.ABORTING:
-        this._pointComponent.querySelector('.event').shake(resetFormState);
-        this._pointEditorComponent.querySelector('.event--edit').shake(resetFormState);
+        this._pointComponent.shake(resetFormState);
+        this._pointEditorComponent.shake(resetFormState);
         break;
     }
   }

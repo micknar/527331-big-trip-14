@@ -9,40 +9,28 @@ export const getUniquePointTypes = (points) => {
   return [...new Set(types)];
 };
 
-export const getPointsPrice = (points, types) => {
-  const data = Array(types.length).fill(null);
+export const getPointsPrice = (points, type) => {
+  let totalPrice = 0;
 
-  types.forEach((type, index) => {
-    points
-      .filter((point) => point.type === type)
-      .forEach((point) => {
-        data[index] += point.basePrice;
-      });
-  });
+  points
+    .filter((point) => point.type === type)
+    .forEach((point) => totalPrice += point.basePrice);
 
-  return data;
+  return totalPrice;
 };
 
-export const getPointsCountByType = (points, types) => {
-  const data = Array(types.length).fill(null);
-
-  types.forEach((type, index) => data[index] = points.filter((point) => point.type === type).length);
-
-  return data;
+export const getPointsCountByType = (points, type) => {
+  return points.filter((point) => point.type === type).length;
 };
 
-export const getPointsDuration = (points, types) => {
-  const data = Array(types.length).fill(null);
+export const getPointsDuration = (points, type) => {
+  let totalDuration = 0;
 
-  types.forEach((type, index) => {
-    points
-      .filter((point) => point.type === type)
-      .forEach((point) => {
-        data[index] += point.durationTimestamp;
-      });
-  });
+  points
+    .filter((point) => point.type === type)
+    .forEach((point) => totalDuration += point.durationTimestamp);
 
-  return data;
+  return totalDuration;
 };
 
 export const getChartSettings = (labels, data, text, formatter) => {

@@ -313,7 +313,7 @@ export default class PointEditor extends SmartView {
     const checkedOfferTitle = evt.target.dataset.offerTitle;
     const offers = this._data.offers;
 
-    const availableOffers = this._offers.get().filter((item) => item.type === this._data.type)[0].offers;
+    const availableOffers = this._offers.get().find((item) => item.type === this._data.type).offers;
     const checkedOffer = availableOffers.find((item) => item.title === checkedOfferTitle);
 
     const newOffers = offers.find((item) => item.title === checkedOfferTitle)

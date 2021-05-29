@@ -94,9 +94,9 @@ export default class Stats extends SmartView {
 
     const uniquePointTypes = getUniquePointTypes(this._points);
 
-    const price = getPointsPrice(this._points, uniquePointTypes);
-    const count = getPointsCountByType(this._points, uniquePointTypes);
-    const durationTimestamp = getPointsDuration(this._points, uniquePointTypes);
+    const price = uniquePointTypes.map((type) => getPointsPrice(this._points, type));
+    const count = uniquePointTypes.map((type) => getPointsCountByType(this._points, type));
+    const durationTimestamp = uniquePointTypes.map((type) => getPointsDuration(this._points, type));
 
     const data = uniquePointTypes.map((type, index) => ({
       type,

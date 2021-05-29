@@ -79,9 +79,7 @@ export default class Trip {
       return;
     }
 
-    for (let i = 0; i < pointsCount; i++) {
-      this._renderPoint(points[i]);
-    }
+    points.forEach((point) => this._renderPoint(point));
   }
 
   _getPoints() {
