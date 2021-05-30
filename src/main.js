@@ -2,7 +2,8 @@ import MainNavView from './view/main-nav';
 import StatsView from './view/stats';
 import {render, remove} from './utils/render';
 import {isOnline} from './utils/common';
-import {OFFLINE_DOCUMENT_TITLE, UpdateType, NavItem, FilterType, RenderPosition} from './const';
+import {renderToast} from './utils/toast';
+import {OFFLINE_DOCUMENT_TITLE, OfflineMessage, UpdateType, NavItem, FilterType, RenderPosition} from './const';
 import TripPresenter from './presenter/trip';
 import TripMainPresenter from './presenter/trip-main';
 import FilterPresenter from './presenter/filter';
@@ -14,7 +15,7 @@ import Api from './api/api';
 import Store from './api/store';
 import Provider from './api/provider';
 
-const AUTHORIZATION = 'Basic ad2dsdf5hgf6';
+const AUTHORIZATION = 'Basic ad2dsddff5hgf6';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 const STORE_PREFIX = 'big-trip-localstorage';
 const STORE_VER = 'v2';
@@ -103,6 +104,8 @@ window.addEventListener('online', () => {
 });
 
 window.addEventListener('offline', () => {
+  addPointBtnNode.disabled = true;
+  renderToast(OfflineMessage.OFFLINE_MODE);
   document.title += OFFLINE_DOCUMENT_TITLE;
 });
 

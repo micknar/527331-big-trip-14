@@ -113,4 +113,5 @@ export const OfflineMessage = {
   SAVE: 'You can\'t save point offline',
   EDIT: 'You can\'t edit point offline',
   SYNC: 'Sync data failed',
+  OFFLINE_MODE: 'You are offline',
 };

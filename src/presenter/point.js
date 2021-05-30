@@ -2,7 +2,7 @@ import PointView from '../view/point';
 import PointEditorView from '../view/point-editor';
 import {render, replace, remove} from '../utils/render';
 import {isEscKey, isOnline} from '../utils/common';
-import {toast} from '../utils/toast';
+import {renderToast} from '../utils/toast';
 import {Mode, State, UserAction, UpdateType, OfflineMessage} from '../const';
 
 export default class Point {
@@ -126,7 +126,7 @@ export default class Point {
 
   _handleFormSubmit(point) {
     if (!isOnline()) {
-      toast(OfflineMessage.SAVE);
+      renderToast(OfflineMessage.SAVE);
       return;
     }
 
@@ -139,7 +139,7 @@ export default class Point {
 
   _handleDeleteClick(point) {
     if (!isOnline()) {
-      toast(OfflineMessage.DELETE);
+      renderToast(OfflineMessage.DELETE);
       return;
     }
 
@@ -152,7 +152,7 @@ export default class Point {
 
   _handleEditClick() {
     if (!isOnline()) {
-      toast(OfflineMessage.EDIT);
+      renderToast(OfflineMessage.EDIT);
       return;
     }
 

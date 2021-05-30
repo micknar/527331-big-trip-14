@@ -1,7 +1,8 @@
 import PointEditorView from '../view/point-editor';
 import {render, remove} from '../utils/render';
-import {isEscKey} from '../utils/common';
-import {UserAction, UpdateType, RenderPosition, DEFAULT_POINT_TYPE} from '../const';
+import {isEscKey, isOnline} from '../utils/common';
+import {renderToast} from '../utils/toast';
+import {UserAction, UpdateType, RenderPosition, DEFAULT_POINT_TYPE, OfflineMessage} from '../const';
 import {addPointBtnNode} from '../main';
 
 export default class PointNew {
@@ -83,11 +84,19 @@ export default class PointNew {
   _escKeyDownHandler(evt) {
     if (isEscKey(evt)) {
       this.destroy();
-      this._addPointBtn.disabled = false;
+
+      if (isOnline()) {
+        this._addPointBtn.disabled = false;
+      }
     }
   }
 
   _handleFormSubmit(point) {
+    if (!isOnline()) {
+      renderToast(OfflineMessage.SAVE);
+      return;
+    }
+
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
@@ -98,6 +107,9 @@ export default class PointNew {
 
   _handleDeleteClick() {
     this.destroy();
-    this._addPointBtn.disabled = false;
+
+    if (isOnline()) {
+      this._addPointBtn.disabled = false;
+    }
   }
 }

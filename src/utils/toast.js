@@ -5,7 +5,7 @@ const container = document.createElement('div');
 container.classList.add('toast-container');
 document.body.append(container);
 
-export const toast = (message) => {
+export const renderToast = (message) => {
   const item = document.createElement('div');
 
   item.textContent = message;
