@@ -33,7 +33,7 @@ const createPointTypesListTemplate = (checkedType, offers, isDisabled) => {
 };
 
 const createOffersTemplate = (type, allOffers, offers, isDisabled) => {
-  const availableOffers = allOffers.filter((item) => item.type === type)[0].offers;
+  const availableOffers = allOffers.find((item) => item.type === type).offers;
 
   if (availableOffers.length > 0) {
     return `<section class="event__section  event__section--offers">
