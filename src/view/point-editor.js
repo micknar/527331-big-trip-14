@@ -3,7 +3,7 @@ import flatpickr from 'flatpickr';
 import he from 'he';
 import SmartView from './smart';
 import {DateFormat, DatePickerSettings} from '../const';
-import {dateToFormat, isCheckedOffer} from '../utils/common';
+import {dateToFormat, isCheckedOffer, isOnline} from '../utils/common';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -146,7 +146,7 @@ ${id === -1
 }
       </header>
       <section class="event__details">
-        ${createOffersTemplate(type, allOffers, offers, isDisabled)}
+        ${isOnline() ? createOffersTemplate(type, allOffers, offers, isDisabled) : ''}
         ${createDestinationTemplate(destination)}
       </section>
     </form>
