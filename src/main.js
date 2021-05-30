@@ -43,7 +43,7 @@ const tripMainPresenter = new TripMainPresenter(tripMainNode, pointsModel);
 const mainNavComponent = new MainNavView();
 let statsViewComponent = null;
 
-if (!isOnline()) {
+if (isOnline()) {
   addPointBtnNode.addEventListener('click', () => {
     tripPresenter.createPoint();
   });
