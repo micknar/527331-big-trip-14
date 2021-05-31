@@ -6,7 +6,7 @@ import PointsListView from '../view/points-list';
 import NoPointsView from '../view/no-points';
 import LoadingView from '../view/loading';
 import {render, replace, remove} from '../utils/render';
-import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints} from '../utils/common';
+import {sortByPrice, sortByTime, sortByStartDate, getFilteredPoints, isOnline} from '../utils/common';
 import {SortType, UserAction, UpdateType, FilterType, RenderPosition, State as PointPresenterViewState} from '../const';
 import {addPointBtnNode} from '../main';
 
@@ -47,7 +47,9 @@ export default class Trip {
 
     this._pointNewPresenter = new PointNewPresenter(this._pointsListComponent, this._destinations, this._offers, this._handleViewAction);
 
-    this._addPointBtn.disabled = false;
+    if (isOnline()) {
+      this._addPointBtn.disabled = false;
+    }
   }
 
   destroy() {
@@ -228,7 +230,9 @@ export default class Trip {
       case UpdateType.INIT:
         this._isLoading = false;
         remove(this._loadingComponent);
-        this._addPointBtn.disabled = false;
+        if (isOnline()) {
+          this._addPointBtn.disabled = false;
+        }
         this._renderSort();
         this._render();
         break;
