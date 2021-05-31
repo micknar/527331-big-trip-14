@@ -1,6 +1,7 @@
 export const CITIES_IN_ROUTE_COUNT = 3;
 export const DEFAULT_POINT_TYPE = 'taxi';
 export const SHAKE_ANIMATION_TIMEOUT = 600;
+export const OFFLINE_DOCUMENT_TITLE = ' [offline]';
 
 export const KeyCode = {
   ESCAPE: 'Escape',
@@ -104,4 +105,13 @@ export const ChartSettings = {
   TICKS_PADDING: 5,
   TITLE_POSITION: 'left',
   TYPE: 'horizontalBar',
+};
+
+export const OfflineMessage = {
+  ADD: 'You can\'t add point offline',
+  DELETE: 'You can\'t delete point offline',
+  SAVE: 'You can\'t save point offline',
+  EDIT: 'You can\'t edit point offline',
+  SYNC: 'Sync data failed',
+  OFFLINE_MODE: 'You are offline',
 };
