@@ -16,7 +16,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  github-token: $big-trip-token
+  github-token: $bigtrip
   local_dir: build
   on:
     branch: master
