@@ -1,4 +1,4 @@
-# «Большое путешествие» [![Build](https://github.com/micknar/big-trip/actions/workflows/build.yml/badge.svg)](https://github.com/micknar/big-trip/actions/workflows/build.yml)
+# «Большое путешествие» [![Test & Build](https://github.com/micknar/big-trip/actions/workflows/build.yml/badge.svg)](https://github.com/micknar/big-trip/actions/workflows/build.yml)
 
 
 
